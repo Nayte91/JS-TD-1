@@ -13,10 +13,10 @@ const populateSelector = (selectorId, dataArray, index) => {
     selector.innerHTML = "";
 
     let defaultOption = document.createElement("option");
-    defaultOption.text = "--Please choose a " + selectorId + "--";
+    defaultOption.text = "-- Please choose a " + selectorId + " --";
     selector.add(defaultOption, null);
     
-    dataArray.map(row => {
+    dataArray.forEach(row => {
         /* row est un object, mais les propriétés d'un object peuvent être appelées
         avec . ou avec []. Ici, [index] permet d'appeler dynamiquement,
         en fonction d'un index qui change. 
