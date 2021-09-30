@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Dogglet viewer</title>
+        <link rel="stylesheet" href="../assets/style.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+            integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
+            crossorigin="anonymous"
+        />
+        <script 
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+            crossorigin="anonymous"
+        ></script>
+        <script src="../assets/data.js" defer></script>
+    </head>
+    <body class="container">
+        <h1>Bienvenue dans ce TD !</h1>
+
+        <p>
+            L'objectif premier du javascript est de suppléer le HTML et le CSS dans les pages web,
+            afin d'apporter des interactions et effets qui méritent de la logique de code.
+        </p>
+        <p>
+            Et l'un des cas classiques du genre est le menu déroulant :
+            faire qu'un contenu se mette à jour lorsque l'on choisi un item dans une liste.
+        </p>
+        <p>
+            Personne n'a envie de sélectionner une entrée, puis de cliquer sur "choisir",
+            et enfin d'attendre que la nouvelle page se charge pour voir le résultat.
+            Encore plus quand on doit les enchainer : un formulaire d'adresse postale avec
+            "pays" --> charger --> "ville" --> charger --> "rue" --> charger... Serait insupportable.
+        </p>
+
+        <p>
+            Donc nous allons jouer avec des data qu'on aime bien, pour les afficher proprement... :)
+        </p>
+
+        <select name="masters" id="master" class="form-select my-2"></select>
+
+        <p>
+            Ci-dessus est un menu déroulant vide, qui en HTML se fait avec une balise select.
+            Les options à l'intérieur sont d'autres balises option.
+        </p>
+        <p>
+            Le but du jeu va donc être de remplir son contenu dynamiquement, et de le faire afficher
+            quelques infos en fonction du choix. Ensuite, on verra où ça nous mène !
+        </p>
+        <p>
+            Pour faire cela, on va avoir besoin de manipuler le navigateur internet et le contenu de notre page.
+            Et pour ça, on a quelques concepts javascript liés au HTML à manipuler.
+            Je vais tenter de les expliquer au mieux.
+        </p>
+
+        <p>
+            Comme souvent en web, la logique de code pure est mêlée à l'affichage,
+            donc il est normal de patauger au milieu des fonctions inconnues pour au final écrire peu de logique.
+            Ici, on aura quand même besoin de manipuler du array, avec du foreach, du map et du filter,
+            ainsi que de l'objet, et de mixer tout cela autour d'une structure imbriquée !
+        </p>
+        <p>
+            Dans la balise head de ce fichier html se trouve un lien script vers le fichier "tools.js"
+        </p>
+    </body>
+</html>
