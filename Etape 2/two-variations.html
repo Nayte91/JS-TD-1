@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Etape 2 - Variations</title>
+        <link rel="stylesheet" href="../assets/style.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+            integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
+            crossorigin="anonymous"
+        />
+        <script 
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+            crossorigin="anonymous"
+        ></script>
+    </head>
+
+    <body class="container">
+        <h1>
+            Variations de difficulté pour l'étape 2
+        </h1>
+
+        <p>Donc à lire quand tu as fini ou que tu es bloquée.</p>
+
+        <h2>Pour augmenter la difficulté ?</h2>
+
+        <ul>
+            <li>Comment afficher par exemple prénom + nom dans le menu, plutôt que seulement le prénom ?</li>
+            <li>Tu sais forcer le texte que tu affiche dans le menu, en minuscule ? En majuscule ? En capitalized (Première Lettre De Chaque Mots En Majuscule Et Le Reste En Minuscule) ?</li>
+            <li>Essaye de rajouter une ou 2 personnes dans le fichier <code>data.js</code>, sans tout péter :)</li>
+            <li>Que se passe-t-il si tu choisis d'afficher une info dans le menu (par exemple : le nom de famille) et que celle-ci est <b>vide</b> pour l'une des personnes <code>"lastName": "",</code> ?</li>
+            <li>Que se passe-t-il si tu choisis d'afficher une info dans le menu (par exemple : le nom de famille) et que celle-ci est <b>absente</b> pour l'une des personnes ?</li>
+            <li>Saurais-tu rajouter une valeur par défaut qui présenterait le menu déroulant ? par exemple il y aurait écrit "-- Please choose a master --" ...</li>
+            <li>
+                Imaginons qu'il y ait des homonymes (2 Julien Robic) inscrits, existe-t-il un bon moyen pour garder une présentation intelligente des maîtres ?
+                Dans notre contexte, tout est navigable en publique.
+            </li>
+        </ul>
+
+        <h2>Besoin d'un coup de pouce ?</h2>
+
+        <ul>
+            <li>
+                La constante <code>doggletData</code> est lisible sans que tu n'ais rien de spécial à faire dans ton fichier <code>one-code.js</code>, 
+                même dans une fonction : les 2 fichiers sont déclarés dans <code>one-template.html</code> (tu peux voir dans la balise <code>head</code>). 
+                Tu peux le prouver en faisant un petit <code>console.log(doggletData)</code> sous la ligne <code>window.addEventListener('load', populateMasterSelector())</code> 
+                et tu constateras le résultat dans l'onglet 'console' de l'inspecteur de ton navigateur (tape <code>F12</code>)
+            </li>
+            <li>
+                Il faut comprendre la constante <code>doggletData</code> qui se trouve dans le fichier <code>data.js</code>. 
+                Ce que tu peux voir, c'est qu'elle commence par un crochet [, puis est suivie d'une accolade { :
+                c'est donc un array d'objets javascript. Et donc, c'est valide de faire <code>doggletData.map()</code> ou <code>doggletData.forEach()</code> !
+            </li>
+            <li>
+                Ligne 6, <code>const addOptionTag = (text) => { ... }</code> est une manière nouvelle (ES2016) de déclarer une fonction. 
+                Si ça fait un peu hipster et que ce n'est pas clair pour toi, c'est équivalent à <code>function addOptionTag(text) { ... }</code>. 
+                C'est donc une fonction qui accepte 1 paramètre (ton texte, une string), qui ne renvoit rien, et que tu peux tester simplement en faisant <code>addOptionTag('toto')</code> !
+            </li>
+            <li>
+                Ton foreach va attendre en paramètre une fonction.
+                Tu vas donc devoir trouver un nom pour chaque item de ton foreach (item ? master ? row ? Comme tu veux) 
+                et écrire la fonction à l'intérieur de forEach(ici). Pas de panique, le résultat est vraiment simple : ça peut tenir sur une ligne sans sacrifier la lisibilité !
+            </li>
+            <li>Cosinus 14% !</li>
+        </ul>
+    </body>
+</html>

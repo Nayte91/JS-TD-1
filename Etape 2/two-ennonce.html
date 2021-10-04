@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Etape 2 - Ennoncé</title>
+        <link rel="stylesheet" href="../assets/style.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+            integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
+            crossorigin="anonymous"
+        />
+        <script 
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+            crossorigin="anonymous"
+        ></script>
+    </head>
+    <body class="container">
+        <h1>Exercice 1</h1>
+
+        <p>
+            Le but va être de remplir dynamiquement un menu déroulant, en fonction de data dont on connait la nature (on sait qu'il y a un nom, un prénom, ...)
+            mais dont on ne connait ni les détails ni le nombre.
+        </p>
+
+        <ol>
+            <li>D'abord, ouvre le fichier <a href="one-template.html">one-template.html</a> dans ton navigateur. Normalement tu dois voir juste le menu déroulant, vide.</li>
+            <li>Ensuite, ouvre le fichier <code>one-code.js</code> dans ton éditeur car c'est dans dans celui-ci que tu vas trimer :)</li>
+            <li>Ouvre également le fichier <code>assets/data.js</code> dans l'EDI car tu vas devoir le décortiquer (sans l'éditer !) pour avancer.</li>
+            <li>le fichier <a href="one-variations.html">one-variations.html</a> te propose des difficultés différentes, si tu galère ou que tu te balades.</li>
+        </ol>
+
+        <p>Ensuite tu n'as qu'à rafraichir la page <a href="one-template.html">one-template.html</a> pour vérifier ce que tu fais.</p>
+
+        <p>
+            Attention, quand tu fais un changement sur ton fichier HTML/CSS/JavaScript, il faut donc sauvegarder le fichier que tu as édité, puis il faut rafraichir la page du navigateur, ça se ne fait pas automatiquement !
+        </p>
+
+        <p>
+            Sous Windows, historiquement on a des raccourcis claviers qui permettent de manipuler les fenêtres des programmes avec alt : par exemple le fameux <code>alt+F4</code>.
+            Depuis l'avènement des programmes avec onglets (navigateurs internet, Photoshop, Visual Studio, ...) la coutume veut que les raccourcis qui manipulent juste un onglet
+            et non pas tout le programme sont avec ctrl : ainsi, <code>alt+F4</code> ferme le programme, mais <code>ctrl+F4</code> ferme l'onglet en cours.
+        </p>
+        <p>
+            Pour manipuler son onglet de navigateur, il y a donc quelques raccourcis sympas : <code>ctrl+F4</code> pour fermer l'onglet, <code>ctrl+L</code> pour sélectionner la barre d'adresse... 
+            et <code>ctrl+R</code> pour recharger la page, comme F5. Quel intérêt à un raccourci en 2 touches au lieu d'une ?
+        </p>
+        <p>
+            Quand on recharge une page, le navigateur relance la requête comme si on revenait sur le site, mais il garde également ce qu'il a déjà en cache, 
+            comme les liens externes de feuilles de style (CSS) ou bien de javascript. 
+        </p>
+        <p>
+            Par exemple, des milliards de sites web ont <a href="https://getbootstrap.com/">Bootstrap</a>, <a href="https://jquery.com/">jQuery</a> ou <a href="https://fontawesome.com/">fontawesome</a>, qui font disons 1Mo à télécharger, 
+            et pourtant on ne les re-télécharge pas à chaque visite; Chaque site pointe vers un lien pour télécharger bootstrap, 
+            et le navigateur vérifie si il n'a pas déjà ce contenu avant de DL. Résultat, ça fait des économies de bande passante et de vitesse d'affichage pour les internautes.
+        </p>   
+        <p>
+            Sauf que parfois on veut rafraichir aussi les feuilles de style et les scripts quand on arrive sur une page... Notamment quand on dev du web. 
+            C'est donc possible, et pour ce faire, le raccourci est <code>ctrl+shift+R</code> (tu écrases ctrl et shift avec ton petit doigt, c'est un coup à prendre).
+        </p>
+         <p>
+            Pourquoi écrire tout ça ? Juste pour expliquer pourquoi prendre l'habitude de rafraichir une page avec <code>ctrl+R</code> plutôt que F5 :) ça a 2 avantages si on reprend ce que j'ai dit dans un autre sens :
+            <ol>
+                <li>Très simple de lancer un refresh total en rajoutant shift,</li>
+                <li>ça se marie très bien avec <code>ctrl+L</code> (hyper pratique celui là, essaye le), <code>ctrl+F</code>, <code>ctrl+C</code>, <code>ctrl+V</code>, ...</li>
+            </ol>
+        </p>
+        <p>
+            Note également que tu peux te debugger assez efficacement avec la console de ton navigateur (en appuyant sur F12, puis onglet 'Console'),
+            et avec la fonction <code>console.log('toto')</code> qui va afficher ton info dans cette console. 
+        </p>
+        <p>
+            C'était un petit tuto pour passer pour une déglingo à peu de frais :)
+        </p>
+    </body>
+</html>
