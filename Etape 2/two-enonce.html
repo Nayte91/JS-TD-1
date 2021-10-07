@@ -17,61 +17,49 @@
         ></script>
     </head>
     <body class="container">
-        <h1>Exercice 1</h1>
+        <h1>Enoncé de l'exercice 2</h1>
 
         <p>
-            Le but va être de remplir dynamiquement un menu déroulant, en fonction de data dont on connait la nature (on sait qu'il y a un nom, un prénom, ...)
-            mais dont on ne connait ni les détails ni le nombre.
+            Maintenant que notre menu déroulant est rempli au chargement de la page, nous allons faire en sorte d'afficher quelque chose quand on en sélectionne une valeur.
         </p>
+
+        <p>Rappel des liens au cas où :</p>
 
         <ol>
-            <li>D'abord, ouvre le fichier <a href="one-template.html">one-template.html</a> dans ton navigateur. Normalement tu dois voir juste le menu déroulant, vide.</li>
-            <li>Ensuite, ouvre le fichier <code>one-code.js</code> dans ton éditeur car c'est dans dans celui-ci que tu vas trimer :)</li>
-            <li>Ouvre également le fichier <code>assets/data.js</code> dans l'EDI car tu vas devoir le décortiquer (sans l'éditer !) pour avancer.</li>
-            <li>le fichier <a href="one-variations.html">one-variations.html</a> te propose des difficultés différentes, si tu galère ou que tu te balades.</li>
+            <li>D'abord, ouvre le fichier <a href="two-template.html">two-template.html</a> dans ton navigateur.</li>
+            <li>Ensuite, ouvre le fichier <code>two-code.js</code> dans ton éditeur car c'est dans dans celui-ci que tu vas trimer :)</li>
+            <li>Ouvre également le fichier <code>assets/data.js</code> dans l'EDI car tu vas devoir l'étudier pour avancer.</li>
+            <li>Le fichier <a href="two-variations.html">two-variations.html</a> te propose des difficultés différentes, si tu galères ou que tu te balades.</li>
         </ol>
 
-        <p>Ensuite tu n'as qu'à rafraichir la page <a href="one-template.html">one-template.html</a> pour vérifier ce que tu fais.</p>
-
         <p>
-            Attention, quand tu fais un changement sur ton fichier HTML/CSS/JavaScript, il faut donc sauvegarder le fichier que tu as édité, puis il faut rafraichir la page du navigateur, ça se ne fait pas automatiquement !
+            Désormais sur le template on va trouver le menu déroulant qui marche (ça sert de solution pour l'exo d'avant !), et les prémisses d'un tableau.
+            Le but du jeu va être de remplir ce tableau en fonction des infos qu'il y a sur un utilisateur !
         </p>
 
         <p>
-            Sous Windows, historiquement on a des raccourcis claviers qui permettent de manipuler les fenêtres des programmes avec alt : par exemple le fameux <code>alt+F4</code>.
-            Depuis l'avènement des programmes avec onglets (navigateurs internet, Photoshop, Visual Studio, ...) la coutume veut que les raccourcis qui manipulent juste un onglet
-            et non pas tout le programme sont avec ctrl : ainsi, <code>alt+F4</code> ferme le programme, mais <code>ctrl+F4</code> ferme l'onglet en cours.
+            Nous allons faire connaissance avec un nouvel évènement : change. 
+            Jusqu'à présent nous n'utilisions que celui de la fin de chargement de la page, qui était relié au document entier,
+            là nous devront ajouter un évènement sur le menu déroulant (et oui, si il y en a plusieurs sur une même page, chacun peut avoir ses propres effets).
         </p>
+
         <p>
-            Pour manipuler son onglet de navigateur, il y a donc quelques raccourcis sympas : <code>ctrl+F4</code> pour fermer l'onglet, <code>ctrl+L</code> pour sélectionner la barre d'adresse... 
-            et <code>ctrl+R</code> pour recharger la page, comme F5. Quel intérêt à un raccourci en 2 touches au lieu d'une ?
+            Je t'ai maché le travail ici, la méthode <code>addEventListener</code> est appelée tout en bas. 
+            Elle accepte en premier paramètre l'évènement ('change'), et en seconde, toujours une fonction.
+            Cette fonction peut fournir comme paramètre un objet représentant l'évènement en question, ce qu'on va demander : on l'appelle donc (e).
+            Puis on envoit à la fonction que tu vas coder, fillMasterTable(), la valeur qui nous intéresse, c'est à dire le prénom du maître que l'on a écrit dans le menu.
+            <b>Note qu'on va au plus simple ici avec juste le prénom, et qu'on ne gère pas les homonymes. Il existe des astuces pour le faire, on verra plus tard ;)</b>
         </p>
+
         <p>
-            Quand on recharge une page, le navigateur relance la requête comme si on revenait sur le site, mais il garde également ce qu'il a déjà en cache, 
-            comme les liens externes de feuilles de style (CSS) ou bien de javascript. 
+            Donc la fonction que tu vas implémenter aura un argument : le prénom du maître sélectionné dans le menu déroulant. Et à toi de jouer :)
+            J'arrête les indications ici, car réfléchir aux étapes à parcourir pour coder est aussi intéressant que de coder.
+            Bien sûr si tu patauges toute l'aide est dans <a href="two-variations.html">two-variations.html</a>.
         </p>
+
         <p>
-            Par exemple, des milliards de sites web ont <a href="https://getbootstrap.com/">Bootstrap</a>, <a href="https://jquery.com/">jQuery</a> ou <a href="https://fontawesome.com/">fontawesome</a>, qui font disons 1Mo à télécharger, 
-            et pourtant on ne les re-télécharge pas à chaque visite; Chaque site pointe vers un lien pour télécharger bootstrap, 
-            et le navigateur vérifie si il n'a pas déjà ce contenu avant de DL. Résultat, ça fait des économies de bande passante et de vitesse d'affichage pour les internautes.
-        </p>   
-        <p>
-            Sauf que parfois on veut rafraichir aussi les feuilles de style et les scripts quand on arrive sur une page... Notamment quand on dev du web. 
-            C'est donc possible, et pour ce faire, le raccourci est <code>ctrl+shift+R</code> (tu écrases ctrl et shift avec ton petit doigt, c'est un coup à prendre).
-        </p>
-         <p>
-            Pourquoi écrire tout ça ? Juste pour expliquer pourquoi prendre l'habitude de rafraichir une page avec <code>ctrl+R</code> plutôt que F5 :) ça a 2 avantages si on reprend ce que j'ai dit dans un autre sens :
-            <ol>
-                <li>Très simple de lancer un refresh total en rajoutant shift,</li>
-                <li>ça se marie très bien avec <code>ctrl+L</code> (hyper pratique celui là, essaye le), <code>ctrl+F</code>, <code>ctrl+C</code>, <code>ctrl+V</code>, ...</li>
-            </ol>
-        </p>
-        <p>
-            Note également que tu peux te debugger assez efficacement avec la console de ton navigateur (en appuyant sur F12, puis onglet 'Console'),
-            et avec la fonction <code>console.log('toto')</code> qui va afficher ton info dans cette console. 
-        </p>
-        <p>
-            C'était un petit tuto pour passer pour une déglingo à peu de frais :)
+            Cette étape est un petit peu plus copieuse que la précédente, mais je la trouve motivante : la magie opèrera quand tu verras le tableau se remplir dynamiquement !
+            Et selon ton niveau, la première étape pouvait être très (trop) simple. Ici ça commence à ressembler à du code !
         </p>
     </body>
 </html>

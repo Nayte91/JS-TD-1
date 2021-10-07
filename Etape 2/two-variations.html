@@ -18,52 +18,230 @@
     </head>
 
     <body class="container">
-        <h1>
-            Variations de difficulté pour l'étape 2
-        </h1>
+        <h1>Variations de difficulté pour l'étape 2</h1>
 
-        <p>Donc à lire quand tu as fini ou que tu es bloquée.</p>
+        <p>Donc à lire quand tu as fini \o/ ou que tu es bloquée /o\.</p>
 
         <h2>Pour augmenter la difficulté ?</h2>
 
         <ul>
-            <li>Comment afficher par exemple prénom + nom dans le menu, plutôt que seulement le prénom ?</li>
-            <li>Tu sais forcer le texte que tu affiche dans le menu, en minuscule ? En majuscule ? En capitalized (Première Lettre De Chaque Mots En Majuscule Et Le Reste En Minuscule) ?</li>
-            <li>Essaye de rajouter une ou 2 personnes dans le fichier <code>data.js</code>, sans tout péter :)</li>
-            <li>Que se passe-t-il si tu choisis d'afficher une info dans le menu (par exemple : le nom de famille) et que celle-ci est <b>vide</b> pour l'une des personnes <code>"lastName": "",</code> ?</li>
-            <li>Que se passe-t-il si tu choisis d'afficher une info dans le menu (par exemple : le nom de famille) et que celle-ci est <b>absente</b> pour l'une des personnes ?</li>
-            <li>Saurais-tu rajouter une valeur par défaut qui présenterait le menu déroulant ? par exemple il y aurait écrit "-- Please choose a master --" ...</li>
             <li>
-                Imaginons qu'il y ait des homonymes (2 Julien Robic) inscrits, existe-t-il un bon moyen pour garder une présentation intelligente des maîtres ?
-                Dans notre contexte, tout est navigable en publique.
+                Comment tu t'y prendrais pour pré-remplir les noms des champs, et pour ne remplir que les valeurs ?
+                Comment gérer le cas de figure où ton maître n'a pas un champ requis (exemple : Carole n'a pas de champ 'veterinarianName') ?
+                Comment gérer le cas de figure où un maître a un champ qui n'est pas demandé par le tableau (exemple : Julien a un champ password qu'il ne faut pas montrer) ?
             </li>
+            <li>Sur quelle valeur unique pourrais-tu tester dans le filter, au cas où il y aurait des homonymes ? Comment faire si le texte dans le menu reste 'firstName' ?</li>
+            <li>Arnaud a un nom de famille en MAJUSCULE : saurais-tu forcer l'écriture de tous les noms, prénoms, adresses dans un format propre et adéquat ?</li>
+            <li>Saurais-tu modifier les noms des propriétés, affichés dans la colonne de gauche, pour qu'ils ne soient plus anglicisés ?</li>
+            <li>A ton avis, c'est quoi la prochaine étape du TD ? :)</li>
         </ul>
 
         <h2>Besoin d'un coup de pouce ?</h2>
 
+        <p>Voici les grandes étapes que tu dois retrouver dans ta réflexion pour cette fonction : bravo à toi si tu les avais toutes !</p>
+
+        <ol>
+            <li>Filtrer les data pour ne garder que le maitre selectionné,</li> 
+            <li>Cibler le tableau HTML dans lequel on va afficher le résultat,</li> 
+            <li>Itérer à travers les propriétés d'un maître,</li>
+            <li>Afficher les propriétés dans ce fameux tableau HTML,</li>
+            <li>Filtrer certaines propriétés pour ne pas qu'elles apparaissent,</li>
+            <li>Vider le tableau à chaque fois qu'on change de personne dans le menu déroulant. (celui là tu peux difficilement y penser avant de te manger le problème ^^)</li>
+        </ol>
+
+        <h3>filtrage</h3>
+
         <ul>
             <li>
-                La constante <code>doggletData</code> est lisible sans que tu n'ais rien de spécial à faire dans ton fichier <code>one-code.js</code>, 
-                même dans une fonction : les 2 fichiers sont déclarés dans <code>one-template.html</code> (tu peux voir dans la balise <code>head</code>). 
-                Tu peux le prouver en faisant un petit <code>console.log(doggletData)</code> sous la ligne <code>window.addEventListener('load', populateMasterSelector())</code> 
-                et tu constateras le résultat dans l'onglet 'console' de l'inspecteur de ton navigateur (tape <code>F12</code>)
+                Pour filtrer tes données, il faudra un petit coup de <code>array.filter()</code>.
+                Le but est que si tu choisis 'Carole' dans le menu déroulant, tu ne dois plus jongler avec les data de 'Julien' ni de 'Arnaud'.
             </li>
             <li>
-                Il faut comprendre la constante <code>doggletData</code> qui se trouve dans le fichier <code>data.js</code>. 
-                Ce que tu peux voir, c'est qu'elle commence par un crochet [, puis est suivie d'une accolade { :
-                c'est donc un array d'objets javascript. Et donc, c'est valide de faire <code>doggletData.map()</code> ou <code>doggletData.forEach()</code> !
+                Si tu n'as pas encore étudié cette méthode <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter">array.filter()</a>,
+                elle accepte en paramètre une fonction, comme <code>array.map()</code>, et va itérer à travers ton tableau... Ben comme <code>map()</code> ou <code>forEach()</code>.
+            </li>
+
+            <li>
+                Cette fonction donne en argument l'item de l'array, que tu vas encore appeler comme tu veux (master, row, item, user...), C'est toi qui voit, 
+                et qui doit renvoyer <code>true</code> ou <code>false</code>.
+            </li>
+
+            <li>
+                Une fois que ta méthode array.filter() a cette fonction écrite, 
+                elle te renvoit un nouvel array (comme <code>array.map()</code> donc !), 
+                qui sera l'ensemble des items de ton array d'origine qui auront reçu un <code>true</code> de la part de ta fonction imbriquée.
+            </li>
+
+            <li>
+                <b>Que fait cette ligne ?</b><br />
+                <code>newArray = oldArray.filter(item => true));</code> <br />
+                <details>
+                    <summary>Réponse</summary>
+                    Le résultat est que ton newArray est exactement le même que ton oldArray, puisqu'on a dit oui à tout, ça n'a rien filtré.
+                </details>
+            </li>
+
+            <li>
+                <b>Et que fait celle là ?</b> <br />
+                <code>newArray = oldArray.filter(item => false));</code> <br />
+                <details>
+                    <summary>Réponse</summary>
+                    Le résultat est que ton newArray est totalement vide, puisque tout a reçu false, tout s'est fait filtrer.
+                </details>
+            </li>
+    
+            <li>
+                Commence par trouver un nom sympa à la variable qui va recevoir ton tableau filtré : 
+                personnellement je l'ai appelée selectedMasterData, mais ça n'est pas du code et plus de la méthodo, donc je n'ai rien à t'apprendre dans ce domaine :)
+            </li>
+
+            <li>
+                Tu vas déclarer cette variable, avec <code>let</code>. 
+                N'oublie pas qu'ensuite tu pourras vérifier tes résultats de <code>array.filter()</code> avec un <code>console.log(taVariable)</code> une ligne en dessous.
+                Une fois que t'en es là, tu vas pouvoir faire joujou avec la méthode, ta fonction, et tester tes résultats tranquillou.
+            </li>
+
+            <li>
+                Le résultat de <code>array.filter()</code> est un nouveau tableau, qui normalement doit comporter un seul item, soit le maître sélectionné.
+                Mais ce que tu veux toi, ça n'est pas un tableau avec une entrée, mais bien cette entrée directement, un objet représentant un maître !
+            </li>
+
+            <li>
+                Comment récupères-tu l'item <code>n</code> d'un array, disons au hasard, le premier ?
+                <details>
+                    <summary>Réponse</summary>
+                    <code>array[n]</code>. Comme les arrays commencent à 0, dans notre cas, tu vas faire quelque chose ressemblant à <code>firstItem = array[0]</code>.
+                </details>
+            </li>
+
+            <li>Dans la fonction-paramètre de <code>array.filter()</code>, tu vas écrire une condition : on va comparer le texte sélectionné au prénom.</li>
+
+            <li>
+                Le texte sélectionné arrive en paramètre de la fonction fillMasterTable (c'est le selectedMasterFirstName).
+                Tu vas le comparer avec un <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators#equality_operators">opérateur d'égalité</a>, soit <code>===</code>. Le simple fait de comparer va te renvoyer un booléen, exactement ce que tu veux.
+                Au final, tu peux caler ton filter en une petite ligne !
+            </li>
+
+            <li>
+                <details>
+                    <summary>Pour ton filter, tu peux te retrouver avec ton objet soit en 2 lignes --></summary>
+                    <p>
+                        <code>let filteredDoggletData = doggletData.filter(master => master.firstName == selectedMasterFirstName) <br />
+                        let filteredMaster = filteredDoggletData[0]</code>
+                    </p>
+                </details>
+            </li>
+
+            <li>
+                <details>
+                    <summary>soit directement en une ligne --></summary>
+                    <p><code>let filteredMaster = doggletData.filter(master => master.firstName == selectedMasterFirstName)[0]</code></p>
+                </details>
+            </li>
+        </ul>
+
+        <h3>Cibler le tableau HTML</h3>
+
+        <ul>
+            <li>
+                Si tu as dépioté le fichier <code>two-code.js</code>, tu dois dû voir que c'était déjà fait :
+                <code>const masterTableBody</code> tout en haut cible le corps du tableau où l'on affichera les propriétés du maître.
+            </li>
+        </ul>
+
+        <h3>Itérer sur l'objet </h3>
+        
+        <ul>
+            <li>
+                Il va falloir passer sur chaque propriété de l'utilisateur, puis d'un coté du tableau en noter le nom, et de l'autre la valeur.
+                Le problème ici étant qu'on ne peut pas itérer sur un objet comme sur un array; La méthode object.forEach() n'existe pas... 
+                Il va falloir faire une boucler manuellement. On va faire ça pas à pas.
             </li>
             <li>
-                Ligne 6, <code>const addOptionTag = (text) => { ... }</code> est une manière nouvelle (ES2016) de déclarer une fonction. 
-                Si ça fait un peu hipster et que ce n'est pas clair pour toi, c'est équivalent à <code>function addOptionTag(text) { ... }</code>. 
-                C'est donc une fonction qui accepte 1 paramètre (ton texte, une string), qui ne renvoit rien, et que tu peux tester simplement en faisant <code>addOptionTag('toto')</code> !
+                Voilà le statement que l'on va utiliser dans notre cas : 
+                <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...in">la boucle for...in</a>.
             </li>
             <li>
-                Ton foreach va attendre en paramètre une fonction.
-                Tu vas donc devoir trouver un nom pour chaque item de ton foreach (item ? master ? row ? Comme tu veux) 
-                et écrire la fonction à l'intérieur de forEach(ici). Pas de panique, le résultat est vraiment simple : ça peut tenir sur une ligne sans sacrifier la lisibilité !
+                Comment l'utiliser ? Dans son appel <code>for (const property in object)</code>, chez nous 'object' sera notre variable avec le maître qu'on aura filtré. 
+                Dépend de comment tu l'as appelé, par exemple filteredMaster.
+                <code>const property</code> où property tu donnes le nom que tu veux (comme quand tu nommes <code>item</code> dans un <code>forEach(item => console.log(item))</code> par exemple), c'est le nom de la propriété de ton objet.
+                Et ta boucle for va itérer à travers toutes les propriétés.
             </li>
-            <li>Cosinus 14% !</li>
+            <li>
+                L'exemple de la page Mozilla est très bien ! Il explique comment utiliser <code>console.log()</code> dedans, et comment récupérer le plus important, 
+                à savoir le nom de la propriété et sa valeur (par exemple 'FirstName', et 'Carole'). On a donc tout pour la suite :)
+            </li>
+        </ul>
+
+        <h3>Afficher dans le tableau</h3>
+
+        <ul>
+            <li>
+                Ici encore de l'API web donc pas quelque chose que tu vas te farcir maintenant; 
+                Je t'ai écrit une fonction <code>addTableRow()</code>.
+            </li>
+            <li>
+                <code>addTableRow()</code> accepte 2 arguments de texte, ce qu'il y aura à afficher dans la colonne de gauche, et dans la colonne de droite.
+                Cette fonction ne renvoit rien, elle fait c'est tout. Tu n'as rien à attendre en retour.
+            </li>
+            <li>
+                Ce qui pourrait te piéger : peu importe comment tu nommes tes 2 paramètres <code>(left et right)</code>, tu n'as pas besoin quand tu appelles cette fonction, de lui donner 2 paramètres avec ces noms là.
+                tu peux simplement faire un <code>addTableRow(property, 'toto')</code> du moment que tu les passes dans l'ordre c'est ok !
+            </li>
+        </ul>
+
+        <h3>Filtrer les propriétés</h3>
+
+        <ul>
+            <li>
+                Alors si tu as réussi jusqu'ici, déjà bravo, et ensuite tu dois te retrouver dans ton tableau avec une entrée parasite, à savoir les dogs.
+                Comme la propriété dogs est un tableau (tu peux avoir plusieurs chiens), JavaScript ne sait pas pas juste écrire la valeur, et il écrit '[object Object]'.
+                Il va donc falloir dire de ne pas ajouter de ligne quand c'est pas un string.
+            </li>
+            <li>
+                'ne pas ajouter de ligne quand c'est pas un string' c'est une condition, donc on est bons pour mettre un <code>if()</code> dans notre boucle <code>for()</code>.
+                Selon le résultat du test, on va appeler ou non la fonction <code>addTableRow()</code>.
+            </li>
+            <li>
+                Comment on teste si la propriété est un array alors ? C'est la partie la plus dure :) 
+                Pour le faire sans aide, il va falloir faire une recherche google et voir les réponses sur StackOverflow.
+            </li>
+            <li>
+                On doit trouver que pour tester la nature d'une variable, on va utiliser l'opérateur <code>typeof</code>.
+                Une petite recherche sur la doc de JavaScript chez Mozilla, voyons la <a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Operators/typeof#description">description de typeof</a>.
+            </li>
+            <li>
+                Là c'est la partie non intuitive de JS... Un array, tout aussi utile qu'il soit, n'a pas son propre type, soit sa propre réponse dans <code>typeof</code>! 
+                On va donc se diriger vers 'Tout autre objet', soit <code>'object'</code> comme résultat attendu à <code>typeof monArray</code>.
+            </li>
+            <li>
+                Attention, c'est bien la valeur de la propriété qu'on test avec typeof, et non pas son nom !
+                Soit le 2ème paramètre que tu envoies à <code>addTableRow()</code>.
+            </li>
+            <li>
+                <details>
+                    <summary>Résultat, ta boucle for --></summary>
+                    <p><code>for (const property in filteredMaster) {<br />
+                        if (typeof filteredMaster[property] !== 'object') {<br />
+                            addTableRow(property, filteredMaster[property])<br />
+                        }<br />
+                    }</code></p>
+                </details>
+            </li>
+        </ul>
+
+        <h3>Vider le tableau</h3>
+
+        <ul>
+            <li>
+                Tu as aussi dû remarquer que si tu changes de maître, ça rajoute les nouvelles propriétés à la suite des anciennes, allongeant et polluant le tableau. 
+                Il faut donc commencer, dans la fonction <code>addTableRow()</code>, par nettoyer le tableau. Si tu y avais pensé, nickel :)
+            </li>
+            <li>
+                Pour le faire, il va encore falloir manipuler l'API web, donc pas pour toi; Je t'ai préparé une petite fonction simple, <code>resetTable()</code>.
+                Pas de paramètres, pas de retour, tu l'appelles et ça vide le tableau. Essayes !
+            </li>
+            <li>14%.</li>
         </ul>
     </body>
 </html>
