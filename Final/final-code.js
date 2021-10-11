@@ -54,7 +54,8 @@ const populateTableBody = (tableBody, dataObject) => {
             qui n'a pas de paramètre (d'où le ()), 
             dans laquelle on lance 3 fonctions,
             elle ne renvoit rien.
-    https://developer.mozilla.org/en-US/docs/Web/API/Window/load_event */
+    https://developer.mozilla.org/en-US/docs/Web/API/Window/load_event 
+*/
 window.addEventListener(
     'load', 
     () => {
@@ -67,7 +68,7 @@ window.addEventListener(
 masterSelector.addEventListener(
     'change', 
     (e) => {
-        var selectedMasterData = doggletData.filter((master) => master.firstName == e.target.value)[0]
+        var selectedMasterData = doggletData.filter(master => master.firstName == e.target.value)[0]
         populateTableBody(masterTable, selectedMasterData)
         populateDogSelector(dogSelector, selectedMasterData.dogs)
     }

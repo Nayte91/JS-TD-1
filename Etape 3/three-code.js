@@ -34,19 +34,20 @@ const addTableRow = (left, right) => masterTableBody.innerHTML += "<tr><td>" + l
 const resetTable = () => masterTableBody.innerHTML = ""
 
 /*
+    Rempli le tableau des maitres avec les propriétés de l'objet maitre sélectionné.
     Cette fonction reçoit un paramètre, une string qui contient le prénom du maître sélectionné.
-    Elle ne doit rien renvoyer (tout du moins ça ne sert à rien de return quelque chose ^^).
-    
-    Tu vas écrire dans cette fonction !
-    1. De quoi vider le tableau,
-    2. Un filter() pour sélectionner le maître adéquat,
-    3. Une boucle pour passer à travers les propriétés de ce maître,
-    4. Une condition pour ne pas afficher une propriété qui serait un array (en l'occurrence les chiens).
+    Elle ne renvoie rien.
 */
 const fillMasterTable = (selectedMasterFirstName) => {
-    /* Au dessus de ton code */
+    resetTable()
 
-    /* En dessous de ton code */
+    let filteredMaster = doggletData.filter(master => master.firstName === selectedMasterFirstName)[0]
+    
+    for (const property in filteredMaster) {
+        if (typeof filteredMaster[property] !== 'object') {
+            addTableRow(property, filteredMaster[property])
+        }
+    }
 }
 
 /* 
