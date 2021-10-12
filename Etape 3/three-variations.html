@@ -25,16 +25,20 @@
         <h2>Pour augmenter la difficulté ?</h2>
 
         <ul>
-            <li></li>
+            <li>
+                Ne devrait-on pas cacher le menu déroulant de sélection de chien lorsqu'aucun maitre n'est sélectionné 
+                (au chargement, si on choisi "-- Please choose a master --", ..) ?
+            </li>
+            <li>Tu saurais rajouter "-- Please choose a dog --" au départ du menu ?</li>
         </ul>
 
         <h2>Besoin d'un coup de pouce ?</h2>
 
-        <p>Voici les grandes étapes que tu dois retrouver dans ta réflexion pour cette étape :</p>
+        <p>Voici les grandes étapes que tu dois retrouver dans ta réflexion :</p>
 
         <ol>
-            <li>Déclencher le remplissage du menu lorsqu'on sélectionne un maître,</li> 
-            <li>Récupérer dans une variable le array avec les chiens appartenants au maître sélectonné,</li>
+            <li>Déclencher le remplissage du menu,</li> 
+            <li>Récupérer la liste des chiens d'un maître,</li>
             <li>Cibler le menu déroulant adéquat,</li>
             <li>Trouver la fonction JS qui va permettre de remplir le menu déroulant,</li>
             <li>Itérer dans le array des chiens avec un <code>forEach()</code>,</li>
@@ -44,37 +48,95 @@
         <h3>Déclenchement du remplissage</h3>
 
         <ul>
-            <li></li>
+            <li>Il semble évident qu'on a tout intérêt à déclencher le remplissage lorsqu'un maitre est sélectionné.</li>
+            <li>Notre salut se trouvera tout en bas du fichier, au niveau du <code>masterSelector.addEventListener()</code>.</li>
+            <li>Actuellement l'event listener exécute une seule fonction, fillMasterTable(). On va donc rajouter une 2ème fonction à executer.</li>
+            <li>
+                Attention à la syntaxe avec la fonction anonyme <code>masterSelector.addEventListener('change', e => bidule() )</code>, 
+                pour éxecuter 2 statements il faudra ouvrir les accolades. 
+            </li>
+            <li>
+                <details>
+                    <summary>on peut toujours tester notre syntaxe avec un console.log() bien placé --></summary>
+                    <p><code>masterSelector.addEventListener('change', (e) => {<br />
+                        fillMasterTable(e.target.value)<br />
+                        console.log('toto')<br />
+                    })</code></p>
+                </details>
+            </li>
+            <li>Bien sûr, la 2ème fonction à appeler n'existe pas encore ! Mais on avait déjà fait <code>populateMasterSelector()</code> alors...</li>
+            <li>
+                Pense qu'on aura besoin de filtrer sur les chiens d'un seul maître, celui sélectionné : 
+                n'oublie pas de passer le firstName, comme pour <code>fillMasterTable(e.target.value)</code> !
+            </li>
         </ul>
 
-        <h3>Récupération du array</h3>
+        <h3>Récupération des chiens</h3>
 
         <ul>
-            <li></li>
+            <li>
+                On est d'accord que nous allons écrire dans une fonction que nous auront déclaré tel quel : 
+                <code>const populateDogSelector = (selectedMasterFirstName) => { }</code> ? Un bon gros copier/coller donc. 
+            </li>
+            <li>Une autre étape que nous avions vu : on peut filtrer sur le maître sélectionné, puis simplement lire la propriété adéquate.</li>
+            <li>Le plus simple reste de copier/coller notre ligne de déclaration de la variable <code>filteredMaster</code> dans notre fonction.</li>
+            <li>
+                Un petit tour dans notre fichier <code>data.js</code> et l'on voit que la propriété qui nous intéresse est "dogs", un array avec la liste des chiens
+                (c'est balot on a tous qu'un seul chien, on peut toujours rajouter Daphnée !). 
+            </li>
+            <li>On va donc pouvoir boucler sur dessus : on prépare notre ligne <code>filteredMaster.dogs.forEach(dog => console.log(dog))</code> et on fait quoi maintenant ?</li>
         </ul>
 
         <h3>Ciblage du menu</h3>
         
         <ul>
-            <li></li>
+            <li>
+                Il va falloir qu'on se souvienne comment on faisait pour cibler le menu déroulant à l'étape 1 :
+                Nous utilisions une fonction <code>addOptionTagToMaster()</code>, qui elle même a besoin de lire une variable <code>masterSelector</code>.
+            </li>
+            <li>
+                Un petit tour dans le HTML pour voir l'id de notre menu déroulant des chiens : ouf, il s'appelle "dog-selector" !
+                Ca ressemble bien à "master-selector" qu'on a déjà.
+            </li>
+            <li>Même sans trop connaître l'API web, un simple petit copier/coller de la déclaration <code>masterSelector</code>, en changeant "master" par "dog"...</li>
+            
         </ul>
 
         <h3>Fonction pour remplir un menu</h3>
 
         <ul>
-            <li></li>
+            <li>
+                Très simple, une petite duplication de la fonction <code>addOptionTagToMaster()</code> en remplaçant également ce qui vise master par dog,
+                et nous avons une fonction capable de remplir notre menu déroulant sur la liste des chiens. Y a plus qu'à l'utiliser !
+            </li>
         </ul>
 
         <h3>ForEach</h3>
 
         <ul>
-            <li></li>
+            <li>Maintenant on sait sur quoi on va boucler : notre fonction <code>addOptionTagToDog(text)</code>. Il faudra juste lui passer du texte.</li>
+            <li>Quoi de mieux que le nom du chien ?</li>
+            <li>
+                comme on a chaque chien dans notre foreach, on jette un coup d'oeil dans <code>data.js</code>... 
+                Et on voit que la propriété qui porte le nom des chiens est dog.name.
+            </li>
         </ul>
 
         <h3>Vérifications</h3>
 
         <ul>
-            <li></li>
+            <li>
+                Si tu as suivi toutes les étapes comme ici, tu dois te retrouver avec un bug : 
+                à chaque fois que tu changes de maître, le menu déroulant charge à la suite les chiens sans vider.
+            </li>
+            <li>C'est la partie la plus méchante, car même si on peut copier/coller, on va devoir adapter sans être sûrs que ça marche de la même façon.</li>
+            <li>On a déjà un exemple de fonction pour reset : c'était pour le tableau <code>resetMasterTable()</code>, et on la lançait au départ de <code>fillMasterTable()</code>.</li>
+            <li>Donc la question à se poser : est ce qu'on reset un menu déroulant de la même manière qu'un tableau ? La réponse est oui.</li>
+            <li><details>
+                    <summary>Une adaptation toute bête de la fonction <code>resetMasterTable()</code>, en visant notre menu déroulant des chiens --></summary>
+                    <p><code>const resetDogSelector = () => dogSelector.innerHTML = ""</code></p>
+            </details></li>
+            <li>Puis il n'y a plus qu'à l'appeler au départ de notre fonction <code>populateDogSelector()</code>, et le bug devrait être corrigé !</li>
             <li>14%.</li>
         </ul>
     </body>

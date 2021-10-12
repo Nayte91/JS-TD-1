@@ -4,8 +4,8 @@
     Tu devras appeler cette fonction, elle te mâche le travail du coté du html, que tu n'as pas étudié.
     Mais tu n'y touches pas ! Sauf si tu veux l'améliorer :p
 */
-const addOptionTag = (text) => {
-    let masterSelector = document.getElementById('master')
+const addOptionTagToMaster = (text) => {
+    let masterSelector = document.getElementById('master-selector')
     let element = document.createElement("option")
     element.text = element.value = text
 

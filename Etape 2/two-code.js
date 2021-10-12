@@ -1,10 +1,10 @@
 /* 
     Avant, cette variable était dans la fonction addOptionTag. Je l'ai sortie pour l'utiliser plus globalement, notamment tout en bas avec .addEventListener. 
 */
-const masterSelector = document.getElementById('master')
+const masterSelector = document.getElementById('master-selector')
 const masterTableBody = document.getElementById('master-table').getElementsByTagName('tbody')[0]
 
-const addOptionTag = (text) => {
+const addOptionTagToMaster = (text) => {
     let element = document.createElement("option")
     element.text = element.value = text
 
@@ -17,21 +17,19 @@ const addOptionTag = (text) => {
     Etudiée à l'étape 1. J'y ai rajouté une valeur par défaut, comme demandé dans une des variations possibles.
 */
 const populateMasterSelector = () => {
-    let defaultOption = document.createElement("option");
-    defaultOption.text = "-- Please choose a master --";
-    masterSelector.add(defaultOption, null)
+    addOptionTagToMaster("-- Please choose a master --")
 
-    doggletData.forEach(row => addOptionTag(row.firstName));
+    doggletData.forEach(row => addOptionTagToMaster(row.firstName))
 }
 
 /*
     Tu vas utiliser cette fonction dans ta boucle pour afficher une propriété dans le tableau !
     2 arguments, ne renvoit rien. Facile.
 */
-const addTableRow = (left, right) => masterTableBody.innerHTML += "<tr><td>" + left + "</td><td>" + right + "</td></tr>"
+const addRowToMasterTable = (left, right) => masterTableBody.innerHTML += "<tr><td>" + left + "</td><td>" + right + "</td></tr>"
 
 /* Fonction pour vider le tableau. Pas d'argument, ne renvoit rien. */
-const resetTable = () => masterTableBody.innerHTML = ""
+const resetMasterTable = () => masterTableBody.innerHTML = ""
 
 /*
     Cette fonction reçoit un paramètre, une string qui contient le prénom du maître sélectionné.

@@ -178,15 +178,15 @@
         <ul>
             <li>
                 Ici encore de l'API web donc pas quelque chose que tu vas te farcir maintenant; 
-                Je t'ai écrit une fonction <code>addTableRow()</code>.
+                Je t'ai écrit une fonction <code>addRowToMasterTable()</code>.
             </li>
             <li>
-                <code>addTableRow()</code> accepte 2 arguments de texte, ce qu'il y aura à afficher dans la colonne de gauche, et dans la colonne de droite.
+                <code>addRowToMasterTable()</code> accepte 2 arguments de texte, ce qu'il y aura à afficher dans la colonne de gauche, et dans la colonne de droite.
                 Cette fonction ne renvoit rien, elle fait c'est tout. Tu n'as rien à attendre en retour.
             </li>
             <li>
                 Ce qui pourrait te piéger : peu importe comment tu nommes tes 2 paramètres <code>(left et right)</code>, tu n'as pas besoin quand tu appelles cette fonction, de lui donner 2 paramètres avec ces noms là.
-                tu peux simplement faire un <code>addTableRow(property, 'toto')</code> du moment que tu les passes dans l'ordre c'est ok !
+                tu peux simplement faire un <code>addRowToMasterTable(property, 'toto')</code> du moment que tu les passes dans l'ordre c'est ok !
             </li>
         </ul>
 
@@ -200,7 +200,7 @@
             </li>
             <li>
                 'ne pas ajouter de ligne quand c'est pas un string' c'est une condition, donc on est bons pour mettre un <code>if()</code> dans notre boucle <code>for()</code>.
-                Selon le résultat du test, on va appeler ou non la fonction <code>addTableRow()</code>.
+                Selon le résultat du test, on va appeler ou non la fonction <code>addRowToMasterTable()</code>.
             </li>
             <li>
                 Comment on teste si la propriété est un array alors ? C'est la partie la plus dure :) 
@@ -216,14 +216,14 @@
             </li>
             <li>
                 Attention, c'est bien la valeur de la propriété qu'on test avec typeof, et non pas son nom !
-                Soit le 2ème paramètre que tu envoies à <code>addTableRow()</code>.
+                Soit le 2ème paramètre que tu envoies à <code>addRowToMasterTable()</code>.
             </li>
             <li>
                 <details>
                     <summary>Résultat, ta boucle for --></summary>
                     <p><code>for (const property in filteredMaster) {<br />
                         if (typeof filteredMaster[property] !== 'object') {<br />
-                            addTableRow(property, filteredMaster[property])<br />
+                            addRowToMasterTable(property, filteredMaster[property])<br />
                         }<br />
                     }</code></p>
                 </details>
@@ -235,10 +235,10 @@
         <ul>
             <li>
                 Tu as aussi dû remarquer que si tu changes de maître, ça rajoute les nouvelles propriétés à la suite des anciennes, allongeant et polluant le tableau. 
-                Il faut donc commencer, dans la fonction <code>addTableRow()</code>, par nettoyer le tableau. Si tu y avais pensé, nickel :)
+                Il faut donc commencer, dans la fonction <code>addRowToMasterTable()</code>, par nettoyer le tableau. Si tu y avais pensé, nickel :)
             </li>
             <li>
-                Pour le faire, il va encore falloir manipuler l'API web, donc pas pour toi; Je t'ai préparé une petite fonction simple, <code>resetTable()</code>.
+                Pour le faire, il va encore falloir manipuler l'API web, donc pas pour toi; Je t'ai préparé une petite fonction simple, <code>resetMasterTable()</code>.
                 Pas de paramètres, pas de retour, tu l'appelles et ça vide le tableau. Essayes !
             </li>
             <li>14%.</li>
