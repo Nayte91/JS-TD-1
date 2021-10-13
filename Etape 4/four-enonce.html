@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Etape 4 - Enoncé</title>
+        <link rel="stylesheet" href="../assets/style.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+            integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
+            crossorigin="anonymous"
+        />
+        <script 
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+            crossorigin="anonymous"
+        ></script>
+    </head>
+    <body class="container">
+        <h1>Enoncé de l'exercice 4</h1>
+
+        <p>
+            Time to clean ! Pour cette étape nous n'allons rien construire de nouveau, mais comme nous avons beaucoup dupliqué (et tu imagines qu'on va encore le faire),
+            Notre 6ème sens de développeur nous dit qu'il serait bon de re-factoriser.
+        </p>
+
+        <p>Rappel des liens au cas où :</p>
+
+        <ol>
+            <li>Ouvre le fichier <a href="four-template.html">four-template.html</a> dans ton navigateur.</li>
+            <li>Tu codes dans <code>four-code.js</code></li>
+            <li>Le fichier <a href="four-variations.html">four-variations.html</a> te propose des difficultés différentes, si tu galères ou que tu te balades.</li>
+        </ol>
+
+        <p>
+            Encore une étape différente ici : tu ne vas pas avoir à deviner les actions à entreprendre, mais je vais t'en faire une liste, que tu devras appliquer, le mieux que tu peux.
+        </p>
+
+        <h2>Un peu de git</h2>
+        
+        <p>
+            Pour chaque étape, de la 1 à la 4, tu vas commit avec git ce qui a été fait et terminé. 
+            Zappe cette partie si tu n'as pas du tout travaillé comme je l'écris en dessous, ou que c'est une galère d'installer git sur ton ordi pour je ne sais quelle raison.
+        </p>
+        
+        <ul>
+            <li>créée un nouveau dossier dans lequel il n'y aura que ce que tu as fait et pas mon cours (si c'est pas déjà fait), et fais un <code>git init</code> dedans.</li>
+            <li>Mets y le répertoire assets/, et (à la racine) le fichier one-template.html que tu renommes en template.html. </li>
+            <li>A l'intérieur de <code>template.html</code> (oui tu vas toucher au HTML), dans la balise <code>head</code>, tu as une balise <code>script</code> dont le src pointe vers <code>"../assets/data.js"</code>. 
+                Modifie le en <code>"assets/data.js"</code>.
+            </li>
+            <li>
+                Avec simplement le répertoire assets/ template.html dans ton répertoire, fais un <code>git add .</code> puis un <code>git commit -m "initial commit"</code>.
+                Pour résumer, ton premier commit est le projet dans l'état où il devait se trouver avant que tu ne commences à le travailler !
+            </li>
+            <li>
+                Maintenant que le premier commit est effectué, change la dépendance, qui pointe vers le fichier <code>one-code.js</code> par <code>code.js</code>.
+                Prends ton fichier <code>one-code.js</code>, colle le à la racine, et renomme le fichier de la même manière.
+            </li>
+            <li>
+                Teste si tout marche en ouvrant template.html, puis commit : 
+                <code>git add . </code> (pour ajouter le fichier code.js, si ton EDI ne l'a pas déjà fait),
+                puis <code>git commit -m "feat: dropdown menu dynamically loaded"</code>.
+            </li>
+            <li>Tu as compris le principe, donc pareil pour les étapes 2, 3, et 4. Le texte des commits est standardisé, en suivant <a href="https://www.conventionalcommits.org/en/v1.0.0/#summary">conventional commits</a>.</li>
+            <li>Si tu utilises VSCode, vas sur la droite dans Extensions (<code>ctrl+shift+X</code>), et recherche "Git Graph". Installe le.</li>
+            <li>Vas dans la section Source Control (<code>ctrl+shift+G</code>) et trouve en haut du bandeau l'icône de git graph (des petites lignes de métro verticales) pour cliquer dessus.</li>
+            <li>
+                Tu dois y voir tes 4 commits, l'initial et les 4 de nos 3 étapes précedentes. 
+                Désormais tu peux <code>git stash</code> pour reprendre au dernier commit si tu as cassé un truc (oohhhh tu risques d'en avoir besoin à cette étape) !
+            </li>
+            <li>Pour la suite, je te conseille de commit à chaque fois que tu fais un truc qui marche.</li>
+        </ul>
+
+        <h2>Refactorisation</h2>
+
+        <p>
+            Les fonctions <code>resetMasterTable()</code> et <code>resetDogSelector()</code> n'avaient d'intérêt qu'au début pour que tu n'ais pas à manipuler de HTML directement.
+            Maintenant le fonction de ces 2 fonctions est limpide, et on ne peut pas vraiment les factoriser. 
+            On va donc remplacer, dans les fonctions qui les appellent, <code>resetMasterTable()</code> et <code>resetDogSelector()</code> par leur contenu (1 ligne pour une ligne donc),
+            puis les supprimer.
+        </p>
+
+        <p>
+            Factorise les 2 fonctions "addOptionTag..." en une seule fonction qui accepte 2 paramètres : l'élément HTML du sélecteur, et le texte.
+        </p>
+
+        <p>
+            <code>addRowToMasterTable(left, right)</code> pourrait très bien être utilisée pour d'autres tableaux (indice indice) : 
+            change son nom en quelque chose de plus générique, et rajoute y un paramètre.
+        </p>
+
+        <p>pareil pour <code>fillMasterTable()</code> qui peut très bien entre rendu plus générique : nouveau paramètre, contenu dynamique.</p>
+
+        <p>
+            A partir de maintenant, je pense que tu t'es assez apropriée le projet, et donc nous pouvons supprimer les commentaires. 
+            Ces commentaires décrivent beaucoup trop les actions qui sont évidentes. 
+            Un bon code a beaucoup de commentaires. 
+            Un excellent code n'a pas de commentaires : il est limpide à la lecture.
+        </p>
+        
+        <p>
+            A l'issue de cette étape, notre <code>code.js</code> devrait être passé de 80+ lignes à 40- lignes. Le tout est normalement beaucoup plus clair, et modulable. 
+            On saura aussi ton style de code : si tu ressens une grande satisfaction à voir ta page de code hyper lisible, expressive et réduite, alors tu vas apprécier le code élégant !
+        </p>
+
+        <p>On va prendre nos constantes : 
+            <ul>
+                <li>masterSelector</li>
+                <li>dogSelector</li>
+                <li>masterTableBody</li>
+                <li>addOptionTag</li>
+                <li>populateSelector</li>
+                <li>addTableRow</li>
+                <li>fillTable</li>
+                <li>(en gros tout sauf les 2 event listeners)</li>
+            </ul>
+            et les déplacer dans un nouveau fichier, que nous allons appeler <code>tools.js</code> et qui va nous servir de mini librairie pour la suite.
+        </p>
+    </body>
+</html>

@@ -1,15 +1,22 @@
 /* 
     Avant, cette variable était dans la fonction addOptionTag. Je l'ai sortie pour l'utiliser plus globalement, notamment tout en bas avec .addEventListener. 
 */
-const masterSelector = document.getElementById('master')
+const masterSelector = document.getElementById('master-selector')
 const masterTableBody = document.getElementById('master-table').getElementsByTagName('tbody')[0]
-const dogSelector = document.getElementById('dog')
+const dogSelector = document.getElementById('dog-selector')
 
-const addOptionTag = (text) => {
+const addOptionTagToMaster = (text) => {
     let element = document.createElement("option")
     element.text = element.value = text
 
     masterSelector.add(element, null)
+}
+
+const addOptionTagToDog = (text) => {
+    let element = document.createElement("option")
+    element.text = element.value = text
+
+    dogSelector.add(element, null)
 }
 
 /* 
@@ -18,33 +25,34 @@ const addOptionTag = (text) => {
     Etudiée à l'étape 1. J'y ai rajouté une valeur par défaut, comme demandé dans une des variations possibles.
 */
 const populateMasterSelector = () => {
-    let defaultOption = document.createElement("option");
-    defaultOption.text = "-- Please choose a master --";
-    masterSelector.add(defaultOption, null)
+    addOptionTagToMaster("-- Please choose a master --")
 
-    doggletData.forEach(row => addOptionTag(row.firstName));
+    doggletData.forEach(row => addOptionTagToMaster(row.firstName))
 }
 
 /* 
     Fonction pour remplir le menu déroulant des chiens dynamiquement.
     Se lance à la sélection d'un maître.
 */
-const populateDogSelector = () => {
-    let defaultOption = document.createElement("option");
-    defaultOption.text = "-- Please choose a dog --";
-    dogSelector.add(defaultOption, null)
+const populateDogSelector = (selectedMasterFirstName) => {
+    resetDogSelector()
+    addOptionTagToDog("-- Please choose a dog --")
 
-    // doggletData.forEach(row => addOptionTag(row.firstName));
+    let filteredMaster = doggletData.filter(master => master.firstName === selectedMasterFirstName)[0]
+
+    filteredMaster.dogs.forEach(dog => addOptionTagToDog(dog.name))
 }
 
 /*
     Tu vas utiliser cette fonction dans ta boucle pour afficher une propriété dans le tableau !
     2 arguments, ne renvoit rien. Facile.
 */
-const addTableRow = (left, right) => masterTableBody.innerHTML += "<tr><td>" + left + "</td><td>" + right + "</td></tr>"
+const addRowToMasterTable = (left, right) => masterTableBody.innerHTML += "<tr><td>" + left + "</td><td>" + right + "</td></tr>"
 
 /* Fonction pour vider le tableau. Pas d'argument, ne renvoit rien. */
-const resetTable = () => masterTableBody.innerHTML = ""
+const resetMasterTable = () => masterTableBody.innerHTML = ""
+
+const resetDogSelector = () => dogSelector.innerHTML = ""
 
 /*
     Rempli le tableau des maitres avec les propriétés de l'objet maitre sélectionné.
@@ -52,13 +60,13 @@ const resetTable = () => masterTableBody.innerHTML = ""
     Elle ne renvoie rien.
 */
 const fillMasterTable = (selectedMasterFirstName) => {
-    resetTable()
+    resetMasterTable()
 
     let filteredMaster = doggletData.filter(master => master.firstName === selectedMasterFirstName)[0]
     
     for (const property in filteredMaster) {
         if (typeof filteredMaster[property] !== 'object') {
-            addTableRow(property, filteredMaster[property])
+            addRowToMasterTable(property, filteredMaster[property])
         }
     }
 }
@@ -71,5 +79,5 @@ const fillMasterTable = (selectedMasterFirstName) => {
 window.addEventListener('load', populateMasterSelector())
 masterSelector.addEventListener('change', (e) => {
     fillMasterTable(e.target.value)
-    populateDogSelector()
+    populateDogSelector(e.target.value)
 })

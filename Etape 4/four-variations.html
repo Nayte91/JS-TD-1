@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Etape 4 - Variations</title>
+        <link rel="stylesheet" href="../assets/style.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+            integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
+            crossorigin="anonymous"
+        />
+        <script 
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+            crossorigin="anonymous"
+        ></script>
+    </head>
+
+    <body class="container">
+        <h1>Variations de difficulté pour l'étape 4</h1>
+
+        <p>Donc à lire quand tu as fini \o/ ou que tu es bloquée /o\.</p>
+
+        <h2>Pour augmenter la difficulté ?</h2>
+
+        <ul>
+            <li>
+                <details>
+                    <summary>Dirais tu qu'il est possible de factoriser <code>populateDogSelector()</code> et <code>populateMasterSelector()</code> en une seule fonction ? --></summary>
+                    <p style="color:darkgreen"><b>
+                        Te voici dans une étape secrête ! 
+                        Tu me diras si tu es tombée dessus (que donc tu as lu jusqu'ici...) et si tu l'as acceptée et réussie :)
+                        Elle est un chouïa plus énervée que les étapes précédentes, donc tu pourras y aller pas à pas ici aussi.
+                    </b></p>
+            
+                    <p>Il est donc possible de ne faire qu'une fonction des 2 autres, moyennant quelques menus sacrifices. On va même un poil gagner en lisibilité.</p>
+            
+                    <ol>
+                        <li>A des fins d'égalité, nous allons également commencer <code>populateMasterSelector()</code> par un nettoyage.</li>
+                        <li>On peut donc reprendre notre <code>dogSelector.innerHTML = ''</code> précédemment collé, et le mettre au départ de <code>populateMasterSelector()</code>.</li>
+                        <li>Attention de bien modifier <code>dogSelector.innerHTML</code> par <code>masterSelector.innerHTML</code> !</li>
+                        <li>Ensuite, que peux-tu faire avec les lignes "please chose a ..." ?</li>
+                        <li>
+                            2 choix : soit supprimer cette valeur par défaut car c'est juste esthétique, soit rendre paramétrables les mots "master" et dog". 
+                            Comme on est là pour faire plus dur, on va donc rajouter un paramètre à la fonction, 
+                            le placer en concaténation dans la string, 
+                            et bien appeler ce nouveau paramètre.
+                        </li>
+                        <li>
+                            <details>
+                                <summary>Ajoutons donc un paramètre "name" dans nos 2 fonctions, qui va représenter le mot "master" ou "dog" ou "mayonnaise". Une string donc --></summary>
+                                <p>pour <code>const populateMasterSelector = (name) => { ...</code></p>
+                                <p>pour <code>const populateDogSelector = (name, selectedMasterFirstName) => { ...</code></p>
+                            </details>
+                        </li>
+                        <li>
+                            <details>
+                                <summary>dans nos 2 fonctions <code>populateDogSelector()</code> et <code>populateMasterSelector</code>, comment rendre dynamique le "please choose" ? --></summary>
+                                <p>avec des + pour la concaténation : <code>addOptionTag(masterSelector, "-- Please choose a " + name + " --")</code></p>
+                            </details>
+                        </li>
+                        <li>
+                            <details>
+                                <summary>Il faut modifier l'appel des fonctions, tout en bas, en ajoutant la string qu'on veut afficher. --></summary>
+                                <p>un seul piège ici : ne pas oublier les quotes.</p>
+                                <p><code>window.addEventListener('load', populateMasterSelector("master"))</code></p>
+                                <p><code>populateDogSelector("dog", e.target.value)</code></p>
+                            </details>
+                        </li>
+                        <li>
+                            <details>
+                                <summary>Ensuite, nous avons dans <code>populateDogSelector()</code> la ligne de filtre. Peut on en faire quelque chose ? --></summary>
+                                <p>
+                                    Le filtrage se fait à 2 endroits différents : dans <code>populateDogSelector()</code> et dans <code>fillMasterTable()</code>.
+                                    Là où ça devient technique, c'est qu'en refactorisant <code>fillMasterTable()</code> on pourra avancer :)
+                                </p>
+                            </details>
+                        </li>
+                        <li>Les 2 fonctions ont un paramètre en commun, selectedMasterFirstName, par lequelle elles filtrent pour trouvé les datas du maître sélectionné.</li>
+                        <li>Les 2 fonctions sont appelées au même endroit, dans l'event listener du change. On peut donc refiler la data déjà filtrée au lieu de passer le selectedMasterFirstName !</li>
+                        <li>Commencons par déclarer, au début de la callback de notre addEventListener, notre filtre et mettre son contenu dans une variable.</li>
+                        <li>
+                            <details>
+                                <summary>On peut commencer par copier/coller le filtré déjà existant, puis le modifier --></summary>
+                                <p><code>let filteredMaster = doggletData.filter(master => master.firstName === selectedMasterFirstName)[0]</code></p>
+                            </details>
+                        </li>
+                        <li>
+                            <details>
+                                <summary>selectedMasterFirstName ne veut plus rien dire une fois dans la callback de l'event listener. Comment le remplacer ? --></summary>
+                                <p>le selectedMasterFirstName nous l'avons déjà... C'est notre <code>e.target.value</code> qu'auparavant nous passions en paramètre.</p>
+                                <p><code>let filteredMaster = doggletData.filter(master => master.firstName === e.target.value)[0]</code></p>
+                                <p>Maintenant on passe <code>filteredMaster</code> en paramètre des 2 fonctions à la place de <code>e.target.value</code>.</p>
+                            </details>
+                        </li>
+                        <li>
+                            Et dans le code des 2 fonctions, on renomme notre argument <code>selectedMasterFirstName</code> par <code>filteredMaster</code>, 
+                            comme ça nous pouvons supprimer les lignes avec filter.
+                        <li>
+                            Désormais, le filtrage se fait au moment du change (dans l'event listener), 
+                            puis on ne passe plus que les données du maître selectionné à des fonctions qui n'avaient pas pour vocation de filtrer.
+                            C'est bien meilleur en terme de code, nos fonctions font bien qu'une action et pas 36.
+                        </li>
+                        <li>
+                            <details>
+                                <summary>
+                                    Maintenant les 2 fonctions <code>populateDogSelector()</code> et <code>populateMasterSelector</code> se ressemblent beaucoup. 
+                                    Que reste-t-il à factoriser ? -->
+                                </summary>
+                                <p>Elles vont ajouter leur texte sur un selector différent, puis foreach sur un jeu de données différent, et enfin remplir les options avec une propriété différente.</p>
+                                <p>Tu t'en doutes, on va les passer en paramètre !</p>
+                            </details>
+                        </li>
+                        <li>Ajoutons un paramètre à la fonction <code>populateMasterSelector()</code>, après name, gardons un nom générique avec data.</li>
+                        <li>Utilisons là en rendant la lecture dynamique : remplaçons <code>doggletData.forEach(...)</code> par <code>data.forEach(...)</code></li>
+                        <li>N'oublions pas de passer, lors de l'appel de la fonction, notre doggletData tout entier désormais : <code>window.addEventListener('load', populateMasterSelector('master', doggletData))</code></li>
+                        <li>
+                            <details>
+                                <summary>Nous avons un nouveau problème puisque <code>populateDogSelector()</code> ne fait pas le même forEach. Vois-tu le problème et sais-tu le résoudre ? --></summary>
+                                <p>Le forEach de <code>populateDogSelector()</code> se fait sur les dogs du maitre sélectionné, non pas directement sur le maitre en question !</p>
+                                <p>Pour la correction, nous allons passer directement le bon array... </p>
+                                <p>Lors de l'appel de la fonction : <code>populateDogSelector('dog', filteredMaster.dogs)</code> soit la propriété 'dogs' du maître filtré !</p>
+                                <p>puis modifions dans la fonction : <code>array.forEach(dog => addOptionTag(dogSelector, dog.name))</code></p>
+                            </details>
+                        </li>
+                        <li>
+                            <details>
+                                <summary>Prochaine étape ? Les selectors. tu vois comment faire ? --></summary>
+                                <p>Utilisé 3 fois dans chaque fonction, c'est un gain facile : on va passer le sélecteur en paramètre.</p>
+                                <p>
+                                    On ajoute un 3ème argument à nos 2 fonctions, <code>selector</code>, 
+                                    et l'on remplace toute mention de <code>dogSelector</code> ou de <code>masterSelector</code> par <code>selector</code>, soit 6 fois.
+                                </p>
+                                <p>Puis à l'appel des fonctions, on y adjoin le selecteur correspondant, <code>dogSelector</code> ou <code>masterSelector</code>, en 3ème.</p>
+                            </details>
+                        </li>
+                        <li>
+                            Petit détail, la fonction <code>populateDogSelector()</code> a dans son forEach, la callable qui a comme paramètre <code>dog</code>.
+                            Pour augmenter la ressemblance, utilisons le mot déjà utilisé dans <code>populateMasterSelector()</code> et plus générique, <code>row</code>.
+                            Ca commence à sentir bon !
+                        </li>
+                        <li>Nouveau morceau : une fonction a besoin d'afficher des <code>name</code> et l'autre des <code>firstName</code>. Comment t'y prendrais-tu ?</li>
+                        <li>
+                            <details>
+                                <summary>C'est reparti pour une mise en paramètre. Mais nous avons un obstacle --></summary>
+                                <p>Ajoutons un 4ème paramètre à notre fonction, et comme c'est la prorpriété de l'objet sur laquelle nous allons agir, appelons le <code>property</code>.</p>
+                                <p>Le problème c'est que row.property ne va pas marcher, JavaScript n'accepte pas un nom de propriété dynamique. Sais-tu régler ce problème ?</p>
+                                <p>
+                                    On l'a déjà réglé dans notre code, dans la fonction <code>fillMasterTable()</code>. 
+                                    Pour une lecture dynamique d'une propriété, on peut utiliser la syntaxe <code>row[property]</code>
+                                </p>
+                                <p>C'est parti donc, dans les 2 fonctions nous aurons <code>data.forEach(row => addOptionTag(selector, row[property]))</code>.</p>
+                                <p>Enfin, on rajoute les paramètres <code>'name'</code> et <code>'firstName'</code> (en string avec les quotes !) dans nos 2 appels de fonctions.</p>
+                            </details>
+                        </li>
+                        <li>Voila nos 2 fonctions sont des copies carbones, on peut en supprimer une, renommer l'autre plus génériquement, et mettre à jour nos appels.</li>
+                    </ol>
+                </details>
+            </li>
+            <li>Petites figures de style : saurais-tu faire passer notre <code>if (typeof selectedMasterData[property] !== 'object') {...</code> de 3 à une ligne ?</li>
+            <li>
+                <details>
+                    <summary>Saurais tu le faire sans écrire le if ? --></summary>
+                    <p>Petite aide sinon c'est vraiment trop dur pour un débutant : jette un oeil sur le 'short-circuit operator'</p>
+                </details>
+            </li>
+            <li>saurais-tu l'écrire en yoda condition ? (là aussi un pattern à rechercher)</li>
+        </ul>
+
+        <h2>Besoin d'un coup de pouce ?</h2>
+
+        <p>Voici les grandes étapes que tu dois retrouver dans ta réflexion pour cette étape :</p>
+
+        <h3>refactorisation de addOptionTagToDog/addOptionTagToMaster</h3>
+
+        <ol>
+            <li>
+                Dupplique (copier/coller) <code>addOptionTagToDog</code> et renomme la <code>addOptionTag</code>.
+            </li>
+            <li>
+                Rajoute y un paramètre dans les parenthèses : tu devrais avoir <code>(selector, text)</code>. 
+                Ce paramètre remplacera dans le code de ta fonction le sélecteur écrit en dur, sur lequel on appliquait la méthode <code>.add()</code>.
+            </li>
+            <li>
+                <details>
+                    <summary>...Ce qui devrait te donner une ligne comme ceci --></summary>
+                    <p><code>selector.add(element, null)</code></p>
+                </details>
+            </li>
+            <li>
+                A grand coup de ctrl+f, recherche toutes les utilisations de "addOptionTagTo", replace les par "addOptionTag", 
+                et rajoutes y le sélecteur correspondant entre parenthèses, en première position.
+            </li>
+            <li>
+                <details>
+                    <summary>Qu'est ce que tu dois controler sur ta page pour t'assurer que tout est OK ? --></summary>
+                    <p>Que les 2 menus déroulants soient bien remplis avec les maitres/animaux !</p>
+                </details>
+            </li>
+            <li>Assure toi que ça marche; Tu peux enfin supprimer les 2 anciennes fonctions.</li>
+        </ol>
+
+        <h3>Suppression de addRowToMasterTable</h3>
+
+        <ul>
+            <li>Quel nom serait adapté ? Plusieurs choix possibles, personnellement j'ai opté pour <code>addTableRow()</code>.</li>
+            <li>Il faut également nommer le nouveau paramètre : la constante déjà existante s'appelant <code>masterTableBody</code>, optons pour <code>tableBody</code>.</li>
+            <li>dans tes paramètres, tu dois te retrouver avec <code>(tableBody, left, right)</code>. </li>
+            <li>Profitons en pour renommer ces left et right qui ne veulent rien dire, en <code>(tableBody, property, value)</code>.</li>
+            <li>Il faut bien entendu également changer left et right dans la concaténation que fait la fonction !</li>
+            <li>Normalement elle n'est utilisée qu'une seule fois; dans le if de <code>fillMasterTable</code>.</li>
+            <li>
+                <details>
+                    <summary>Tu peux donc modifier ton appel tel que --></summary>
+                    <p><code>addTableRow(masterTableBody, property, filteredMaster[property])</code></p>
+                </details>
+            </li>
+            <li>
+                <details>
+                    <summary>Qu'est ce que tu dois controler sur ta page pour t'assurer que tout est OK ? --></summary>
+                    <p>Que le tableau du maître sélectionné se rempli bien avec les propriétés. Et pas la liste des chiens !</p>
+                </details>
+            </li>
+        </ul>
+    </body>
+</html>
