@@ -28,142 +28,155 @@
             <li>
                 <details>
                     <summary>En regardant <code>populateDogSelector()</code> et <code>populateMasterSelector()</code>, dirais-tu qu'il est possible de factoriser en une seule fonction ? --></summary>
-                    <p><b style="color:darkgreen">
-                        Te voici dans une étape secrête ! 
-                        Tu me diras si tu es tombée dessus (que donc tu as lu jusqu'ici...) et si tu l'as acceptée et réussie :)
-                        Elle est un chouïa plus énervée que les étapes précédentes, donc tu pourras y aller pas à pas ici aussi.
-                    </b></p>
-            
-                    <p>Il est donc possible de ne faire qu'une fonction des 2 autres, moyennant quelques menus sacrifices. On va même un poil gagner en lisibilité.</p>
-            
-                    <ol>
-                        <li>A des fins d'équilibre, nous allons également commencer <code>populateMasterSelector()</code> par un nettoyage.</li>
-                        <li>On peut donc reprendre notre <code>dogSelector.innerHTML = ''</code> précédemment collé, et le mettre au départ de <code>populateMasterSelector()</code>.</li>
-                        <li>Attention de bien modifier <code>dogSelector.innerHTML</code> par <code>masterSelector.innerHTML</code> !</li>
-                        <li>Pause.</li>
-                        <li>
-                            Occupons nous des lignes des sélecteurs "please chose a ...", qu'il va falloir dynamiser. 
-                            Cette étape utilise une astuce HTML que tu ne peux pas connaître, donc pas la peine de tenter de prendre de l'avance.
-                            Suis et essaye de comprendre.
-                        </li>
-                        <li>
-                            Si tu regardes dans les balises select du fichier <code>four-template.html</code>, tu y verras plusieurs attributs que j'ai placé :
-                            <ul>
-                                <li>id, qui est unique sur une page, et qui nous sert déjà à pointer vers le selecteur, par le biais des constantes <code>masterSelector</code> et <code>dogSelector</code>,</li>
-                                <li>class, ça c'est pour le style visuel, tu t'en fiches,</li>
-                                <li>data-name et data-carried. La convention veut que les infos importantes pour le javascript, soit placées en html dans des attributs data-bidule.</li>
-                            </ul>
-                            Dans data-name, nous allons retrouver pile poil le mot que nous cherchons !
-                        </li>
-                        <li>Avec cette ligne nous sommes capables de récupérer la valeur au sein de la fonction <code>populateDogSelector</code> : <code>let name = dogSelector.getAttribute('data-name')</code></li>
-                        <li>...Et avec cette ligne nous sommes capables de récupérer la valeur au sein de la fonction <code>populateMasterSelector</code> : <code>let name = masterSelector.getAttribute('data-name')</code></li>
-                        <li>On place donc ces lignes respectivement dans leur fonction, tout au départ. Cela nous donne une variable name qui porte le nom qui nous intéresse, dynamiquement.</li>
-                        <li>
-                            <details>
-                                <summary>Dans nos 2 fonctions <code>populateDogSelector()</code> et <code>populateMasterSelector()</code>, comment rendre dynamique le "please choose" ? --></summary>
-                                <p>avec des + pour la concaténation : <code>addOptionTag(masterSelector, "-- Please choose a " + name + " --")</code></p>
-                            </details>
-                        </li>
-                        <li>Pause !</li>
-                        <li>
-                            <details>
-                                <summary>Ensuite, nous avons dans <code>populateDogSelector()</code> la ligne de filtre. Peut on en faire quelque chose ? --></summary>
-                                <p>
-                                    Le filtrage se fait à 2 endroits différents : dans <code>populateDogSelector()</code> et dans <code>fillMasterTable()</code>.
-                                    Là où ça devient technique, c'est qu'en refactorisant <code>fillMasterTable()</code> on pourra avancer :)
-                                </p>
-                            </details>
-                        </li>
-                        <li>Les 2 fonctions ont un paramètre en commun, <code>selectedMasterFirstName</code>, par lequelle elles filtrent pour trouvé les datas du maître sélectionné.</li>
-                        <li>Les 2 fonctions sont appelées au même endroit, dans l'event listener du change. On peut donc refiler la data déjà filtrée au lieu de passer le selectedMasterFirstName !</li>
-                        <li>Commencons par déclarer, au début de la callback de notre addEventListener, notre filtre et mettre son contenu dans une variable.</li>
-                        <li>
-                            <details>
-                                <summary>On peut commencer par copier/coller le filtre déjà existant, puis le modifier --></summary>
-                                <p><code>let filteredMaster = doggletData.filter(master => master.firstName === selectedMasterFirstName)[0]</code></p>
-                            </details>
-                        </li>
-                        <li>
-                            <details>
-                                <summary>
-                                    La partie <code>selectedMasterFirstName</code> de la ligne précédente ne veut plus rien dire une fois dans la callback de l'event listener. 
-                                    Comment le remplacer ? -->
-                                </summary>
-                                <p>Le <code>selectedMasterFirstName</code> nous l'avons déjà... C'est notre <code>e.target.value</code> qu'auparavant nous passions en paramètre !</p>
-                                <p>Si on remplace dans la ligne précédente, cela donne : <code>let filteredMaster = doggletData.filter(master => master.firstName === e.target.value)[0]</code></p>
-                                <p>
-                                    Puis passons <code>filteredMaster</code> en paramètre des 2 fonctions à la place de <code>e.target.value</code>: 
-                                    <ul>
-                                        <li><code>fillTable(filteredMaster, masterTableBody)</code></li>
-                                        <li><code>populateSelector(filteredMaster, dogSelector)</code></li>
-                                    </ul>
-                                </p>
-                            </details>
-                        </li>
-                        <li>
-                            Et dans le code des 2 fonctions, on renomme notre argument <code>selectedMasterFirstName</code> par <code>filteredMaster</code>, 
-                            comme ça nous pouvons supprimer les lignes avec filter.
-                        <li>
-                            Désormais, le filtrage se fait au moment du change (dans l'event listener), 
-                            puis on ne passe plus que les données du maître selectionné à des fonctions qui n'avaient pas pour vocation de filtrer.
-                            C'est bien meilleur en terme de code, nos fonctions font bien qu'une action et pas 36.
-                        </li>
-                        <li>
-                            <details>
-                                <summary>
-                                    Maintenant les 2 fonctions <code>populateDogSelector()</code> et <code>populateMasterSelector()</code> se ressemblent beaucoup. 
-                                    Que reste-t-il à factoriser ? -->
-                                </summary>
-                                <p>Elles vont ajouter leur texte sur un selector différent, puis foreach sur un jeu de données différent, et enfin remplir les options avec une propriété différente.</p>
-                            </details>
-                        </li>
-                        <li>Ajoutons un paramètre à la fonction <code>populateMasterSelector()</code>, donnons lui un nom générique avec <code>data</code>.</li>
-                        <li>Utilisons là en rendant la lecture dynamique : remplaçons <code>doggletData.forEach(...)</code> par <code>data.forEach(...)</code></li>
-                        <li>N'oublions pas de passer, lors de l'appel de la fonction, notre doggletData tout entier désormais : <code>window.addEventListener('load', populateMasterSelector('master', doggletData))</code></li>
-                        <li>
-                            <details>
-                                <summary>Nous avons un nouveau problème puisque <code>populateDogSelector()</code> ne fait pas le même forEach. Vois-tu le problème et sais-tu le résoudre ? --></summary>
-                                <p>Le forEach de <code>populateDogSelector()</code> se fait sur les dogs du maitre sélectionné, non pas directement sur le maitre en question !</p>
-                                <p>Pour la correction, nous allons passer directement le bon array... </p>
-                                <p>Lors de l'appel de la fonction : <code>populateDogSelector(filteredMaster.dogs)</code> soit la propriété 'dogs' du maître filtré !</p>
-                                <p>Et modifions dans la fonction en conséquence : <code>array.forEach(dog => addOptionTag(dogSelector, dog.name))</code></p>
-                            </details>
-                        </li>
-                        <li>
-                            <details>
-                                <summary>Prochaine étape ? Les selectors. tu vois comment faire ? --></summary>
-                                <p>Utilisé 3 fois dans chaque fonction, c'est un gain facile : on va passer le sélecteur en paramètre.</p>
-                                <p>
-                                    On ajoute un 2ème argument à nos 2 fonctions, <code>selector</code>, 
-                                    et l'on remplace toute mention de <code>dogSelector</code> ou de <code>masterSelector</code> par <code>selector</code> au sein des fonctions, soit 6 fois.
-                                </p>
-                                <p>Puis à l'appel des fonctions, on y adjoin le selecteur correspondant, <code>dogSelector</code> ou <code>masterSelector</code>, en 2ème paramètre.</p>
-                            </details>
-                        </li>
-                        <li>
-                            Petit détail, la fonction <code>populateDogSelector()</code> a dans son forEach, la callable qui a comme paramètre <code>dog</code>.
-                            Pour augmenter la ressemblance, utilisons le mot déjà utilisé dans <code>populateMasterSelector()</code> et plus générique, <code>row</code>.
-                            Ca commence à sentir bon !
-                        </li>
-                        <li>Nouveau morceau : une fonction a besoin d'afficher des <code>name</code> et l'autre des <code>firstName</code>. Comment t'y prendrais-tu ?</li>
-                        <li>
-                            <details>
-                                <summary>C'est reparti pour l'astuce HTML vue plus haut. on a data-carried qui porte l'info que l'on cherche, on a déjà le selector dans la fonction... Saurais-tu le faire ? --></summary>
-                                <p>Ajoutons une autre variable à notre fonction, et comme c'est la propriété de l'objet (maître ou chien) sur laquelle nous allons agir, appelons le bêtement <code>property</code>.</p>
-                                <p>A la suite du premier let, on peut rajouter : <code>let property = selector.getAttribute('data-carried')</code></p>
-                            </details>
-                        </li>
-                        <li>
-                            <details><summary>Le problème c'est que row.property ne va pas marcher, JavaScript n'accepte pas un nom de propriété dynamique. Sais-tu régler ce problème ? --></summary>
-                                <p>
-                                    On l'a déjà réglé dans notre code, dans la fonction <code>fillMasterTable()</code>. 
-                                    Pour une lecture dynamique d'une propriété, on peut utiliser la syntaxe <code>row[property]</code>.
-                                </p>
-                                <p>C'est parti donc, dans les 2 fonctions nous aurons <code>data.forEach(row => addOptionTag(selector, row[property]))</code>.</p>
-                            </details>
-                        </li>
-                        <li>Voila, nos 2 fonctions sont des copies carbones ! On peut en supprimer une, renommer l'autre plus génériquement, et mettre à jour nos appels.</li>
-                    </ol>
+                    <div style="border: 2px solid darkgreen">
+                        <div style="color:darkgreen; font-weight: 700">
+                            <p>Te voici dans la 5ème étape secrête !</p>
+                            <p>Tu me diras si tu es tombée dessus (que donc tu as lu jusqu'ici...) et si tu l'as acceptée et réussie :)</p>
+                            <p>Elle est un chouïa plus énervée que les étapes précédentes, donc tu pourras y aller pas à pas ici aussi.</p>
+                            <p>Elle est optionnelle, le fichier de code que je propose dans l'étape 6 a déjà cette modification appliquée.</p>
+                            <p>C'est en gros une 2ème étape de refactorisation, rien de plus. Fais ce qui est ci-dessous après avoir fini l'étape 4 "normale".</p>
+                        </div>
+                
+                        <p>Il est donc possible de ne faire qu'une fonction des 2 autres, moyennant quelques connaissances supplémentaires.</p>
+                
+                        <ol>
+                            <li>A des fins d'équilibre, nous allons faire commencer <code>populateMasterSelector()</code> par un nettoyage, elle aussi.</li>
+                            <li>On peut donc reprendre notre <code>dogSelector.innerHTML = ''</code>, et le mettre au départ de <code>populateMasterSelector()</code>.</li>
+                            <li>Attention de bien modifier <code>dogSelector.innerHTML</code> par <code>masterSelector.innerHTML</code> !</li>
+                            <li>Pause.</li>
+                            <li>
+                                Occupons nous des lignes des sélecteurs "please chose a ...", qu'il va falloir dynamiser. 
+                                Cette étape utilise une astuce HTML que tu ne peux pas connaître, donc pas la peine de tenter de prendre de l'avance.
+                                Suis et essaye de comprendre.
+                            </li>
+                            <li>
+                                Si tu regardes dans les balises select du fichier <code>four-template.html</code>, tu y verras plusieurs attributs que j'ai placé :
+                                <ul>
+                                    <li><code>"id"</code>, qui est unique sur une page, et qui nous sert déjà à pointer vers le selecteur, par le biais des constantes <code>masterSelector</code> et <code>dogSelector</code>,</li>
+                                    <li><code>"class"</code>, ça c'est pour le style visuel, tu t'en fiches,</li>
+                                    <li><code>"data-name"</code> et <code>"data-carried"</code>. La convention veut que les données à passer au JavaScript soient placées en html dans des attributs <code>"data-bidule"</code>.</li>
+                                </ul>
+                                Dans <code>"data-name"</code>, nous allons retrouver pile poil le mot que nous cherchons !
+                            </li>
+                            <li>Avec cette ligne nous sommes capables de récupérer la valeur au sein de la fonction <code>populateDogSelector</code> : <code>let name = dogSelector.getAttribute('data-name')</code></li>
+                            <li>...Et avec cette ligne nous sommes capables de récupérer la valeur au sein de la fonction <code>populateMasterSelector</code> : <code>let name = masterSelector.getAttribute('data-name')</code></li>
+                            <li>On place donc ces lignes respectivement dans leur fonction, tout au départ. Cela nous donne une variable <code>name</code> qui porte le nom qui nous intéresse, dynamiquement.</li>
+                            <li>
+                                <details>
+                                    <summary>Dans nos 2 fonctions <code>populateDogSelector()</code> et <code>populateMasterSelector()</code>, comment rendre dynamique le "please choose" ? --></summary>
+                                    <p>Avec des + pour la concaténation : <code>addOptionTag(masterSelector, "-- Please choose a " + name + " --")</code></p>
+                                </details>
+                            </li>
+                            <li>Pause !</li>
+                            <li>
+                                <details>
+                                    <summary>Ensuite, nous avons dans <code>populateDogSelector()</code> la ligne de filtre. Peut on en faire quelque chose ? --></summary>
+                                    <p>
+                                        Le filtrage se fait à 2 endroits différents : dans <code>populateDogSelector()</code> et dans <code>fillMasterTable()</code>.
+                                        Là où ça devient technique, c'est qu'en refactorisant <code>fillMasterTable()</code> on pourra avancer :)
+                                    </p>
+                                </details>
+                            </li>
+                            <li>Les 2 fonctions ont un paramètre en commun, <code>selectedMasterFirstName</code>, par lequelle elles filtrent pour trouver les datas du maître sélectionné.</li>
+                            <li>Les 2 fonctions sont appelées au même endroit, dans le <code>masterSelector.addEventListener()</code>. On peut donc refiler la data déjà filtrée au lieu de passer le selectedMasterFirstName !</li>
+                            <li>Commencons par déclarer, au début de la callback de notre addEventListener, notre filtre et mettre son contenu dans une variable.</li>
+                            <li>
+                                <details>
+                                    <summary>On peut commencer par copier/coller le filtre déjà existant, puis le modifier --></summary>
+                                    <p><code>let filteredMaster = doggletData.filter(master => master.firstName === selectedMasterFirstName)[0]</code></p>
+                                </details>
+                            </li>
+                            <li>
+                                <details>
+                                    <summary>
+                                        La partie <code>selectedMasterFirstName</code> de la ligne précédente ne veut plus rien dire une fois dans la callback de l'event listener. 
+                                        Comment le remplacer ? -->
+                                    </summary>
+                                    <p>Le <code>selectedMasterFirstName</code> nous l'avons déjà... C'est notre <code>e.target.value</code> qu'auparavant nous passions en paramètre !</p>
+                                    <p>Si on remplace dans la ligne précédente, cela donne : <code>let filteredMaster = doggletData.filter(master => master.firstName === e.target.value)[0]</code></p>
+                                    <p>
+                                        Puis passons <code>filteredMaster</code> en paramètre des 2 fonctions à la place de <code>e.target.value</code>: 
+                                        <ul>
+                                            <li><code>fillTable(filteredMaster, masterTableBody)</code></li>
+                                            <li><code>populateSelector(filteredMaster, dogSelector)</code></li>
+                                        </ul>
+                                    </p>
+                                </details>
+                            </li>
+                            <li>
+                                Et dans le code des 2 fonctions, on renomme notre argument <code>selectedMasterFirstName</code> par <code>filteredMaster</code>, 
+                                comme ça nous pouvons supprimer les lignes avec filter.
+                            <li>
+                                Désormais, le filtrage se fait au moment du change (dans l'event listener), 
+                                puis on ne passe plus que les données du maître selectionné à des fonctions qui n'avaient pas pour vocation de filtrer.
+                                C'est bien meilleur en terme de code, nos fonctions font bien qu'une seule action et pas 36.
+                            </li>
+                            <li>Pause...</li>
+                            <li>
+                                <details>
+                                    <summary>
+                                        Maintenant les 2 fonctions <code>populateDogSelector()</code> et <code>populateMasterSelector()</code> se ressemblent beaucoup. 
+                                        Que reste-t-il à factoriser ? -->
+                                    </summary>
+                                    <p>Elles vont ajouter leur texte sur un selector différent, puis foreach sur un jeu de données différent, et enfin remplir les options avec une propriété différente.</p>
+                                </details>
+                            </li>
+                            <li>Ajoutons un paramètre à la fonction <code>populateMasterSelector()</code>, donnons lui un nom générique avec <code>data</code>.</li>
+                            <li>Utilisons là en rendant la lecture dynamique : remplaçons <code>doggletData.forEach(...)</code> par <code>data.forEach(...)</code></li>
+                            <li>N'oublions pas de passer, lors de l'appel de la fonction, notre <code>doggletData</code> tout entier désormais : <code>window.addEventListener('load', populateMasterSelector('master', doggletData))</code></li>
+                            <li>
+                                <details>
+                                    <summary>Nous avons un nouveau problème puisque <code>populateDogSelector()</code> ne fait pas le même forEach. Vois-tu le problème et sais-tu le résoudre ? --></summary>
+                                    <p>Le forEach de <code>populateDogSelector()</code> se fait sur les dogs du maitre sélectionné, non pas directement sur le maitre en question !</p>
+                                    <p>Pour la correction, nous allons passer directement le bon array... </p>
+                                    <p>Lors de l'appel de la fonction : <code>populateDogSelector(filteredMaster.dogs)</code> soit la propriété 'dogs' du maître filtré !</p>
+                                    <p>Et modifions dans la fonction en conséquence : <code>array.forEach(dog => addOptionTag(dogSelector, dog.name))</code></p>
+                                </details>
+                            </li>
+                            <li>Pause <3</li>
+                            <li>
+                                <details>
+                                    <summary>Prochaine étape ? Les selectors. tu vois comment faire ? --></summary>
+                                    <p>Utilisé 3 fois dans chaque fonction, c'est un gain facile : on va passer le sélecteur en paramètre.</p>
+                                    <p>
+                                        On ajoute un 2ème argument à nos 2 fonctions, <code>selector</code>, 
+                                        et l'on remplace toute mention de <code>dogSelector</code> ou de <code>masterSelector</code> par <code>selector</code> au sein des fonctions, soit 6 fois.
+                                    </p>
+                                    <p>Puis à l'appel des fonctions, on y adjoin le selecteur correspondant, <code>dogSelector</code> ou <code>masterSelector</code>, en 2ème paramètre.</p>
+                                </details>
+                            </li>
+                            <li>
+                                Petit détail, la fonction <code>populateDogSelector()</code> a dans son forEach, la callable qui a comme paramètre <code>dog</code>.
+                                Pour augmenter la ressemblance, utilisons le mot déjà utilisé dans <code>populateMasterSelector()</code> et plus générique, <code>row</code>.
+                                Ca commence à sentir bon !
+                            </li>
+                            <li>Pause, puis dernière ligne droite</li>
+                            <li>Nouveau morceau : une fonction a besoin d'afficher des <code>name</code> et l'autre des <code>firstName</code>. Comment t'y prendrais-tu ?</li>
+                            <li>
+                                <details>
+                                    <summary>
+                                        C'est reparti pour l'astuce HTML vue plus haut. on a l'attribut <code>data-carried</code> qui porte l'info que l'on cherche, 
+                                        et on a déjà le selector dans la fonction... 
+                                        Saurais-tu le faire ? -->
+                                    </summary>
+                                    <p>Ajoutons une autre variable à notre fonction, et comme c'est la propriété de l'objet (maître ou chien) sur laquelle nous allons agir, appelons le bêtement <code>property</code>.</p>
+                                    <p>A la suite du premier <code>let</code>, on peut rajouter : <code>let property = selector.getAttribute('data-carried')</code></p>
+                                </details>
+                            </li>
+                            <li>
+                                <details>
+                                    <summary>Le problème, c'est que <code>row.property</code> ne va pas marcher, JavaScript n'accepte pas un nom de propriété dynamique. Sais-tu régler ce problème ? --></summary>
+                                    <p>
+                                        On l'a déjà vu dans notre code, dans la fonction <code>fillMasterTable()</code>. 
+                                        Pour une lecture dynamique d'une propriété, on peut utiliser la syntaxe <code>row[property]</code>.
+                                    </p>
+                                    <p>C'est parti donc, dans les 2 fonctions nous ferons <code>data.forEach(row => addOptionTag(selector, row[property]))</code>.</p>
+                                </details>
+                            </li>
+                            <li>Voila, nos 2 fonctions sont des copies carbones ! On peut en supprimer une, renommer l'autre plus génériquement, et mettre à jour nos appels.</li>
+                            <li>Bravo à toi si tu as survécu jusqu'ici !</li>
+                        </ol>
+                    </div>
                 </details>
             </li>
             <li>Petites figures de style : saurais-tu faire passer notre <code>if (typeof selectedMasterData[property] !== 'object') {...</code> de 3 à une ligne ?</li>
@@ -195,12 +208,10 @@
         <h3>Factorisation de addOptionTagToDog/addOptionTagToMaster</h3>
 
         <ol>
+            <li>Duppliquons (copier/coller) la constante <code>addOptionTagToDog</code> et renommons la <code>addOptionTag</code>.</li>
             <li>
-                Dupplique (copier/coller) <code>addOptionTagToDog</code> et renomme la <code>addOptionTag</code>.
-            </li>
-            <li>
-                Rajoute y un paramètre dans les parenthèses : tu devrais avoir <code>(selector, text)</code>. 
-                Ce paramètre remplacera dans le code de ta fonction le sélecteur écrit en dur, sur lequel on appliquait la méthode <code>.add()</code>.
+                On y ajoute un paramètre dans les parenthèses : ce qui nous donne <code>(selector, text)</code>. 
+                Ce paramètre remplacera, dans la fonction, le sélecteur "écrit en dur", sur lequel on appliquait la méthode <code>.add()</code>.
             </li>
             <li>
                 <details>
@@ -209,12 +220,12 @@
                 </details>
             </li>
             <li>
-                A grand coup de ctrl+f, recherche toutes les utilisations de "addOptionTagTo", replace les par "addOptionTag", 
-                et rajoutes y le sélecteur correspondant entre parenthèses, en première position.
+                A grand coup de <code>ctrl+f</code>, on recherche toutes les utilisations de "addOptionTagTo", en les remplaçant par "addOptionTag", 
+                et on y ajoute le sélecteur correspondant entre parenthèses, en première position.
             </li>
             <li>
                 <details>
-                    <summary>Qu'est ce que tu dois controler sur ta page pour t'assurer que tout est OK ? --></summary>
+                    <summary>Qu'est ce que tu dois contrôler sur ta page pour t'assurer que tout est OK ? --></summary>
                     <p>Que les 2 menus déroulants soient bien remplis avec les maitres/animaux !</p>
                 </details>
             </li>
@@ -226,7 +237,7 @@
         <ul>
             <li>Quel nom serait adapté ? Plusieurs choix possibles, personnellement j'ai opté pour <code>addTableRow()</code>.</li>
             <li>Il faut également nommer le nouveau paramètre : la constante déjà existante s'appelant <code>masterTableBody</code>, optons pour <code>tableBody</code>.</li>
-            <li>dans tes paramètres, tu dois te retrouver avec <code>(tableBody, left, right)</code>. </li>
+            <li>Dans tes paramètres, tu dois te retrouver avec <code>(tableBody, left, right)</code>. </li>
             <li>Profitons en pour renommer ces left et right qui ne veulent rien dire, en <code>(tableBody, property, value)</code>.</li>
             <li>Il faut bien entendu également changer left et right dans la concaténation que fait la fonction !</li>
             <li>Normalement elle n'est utilisée qu'une seule fois; dans le if de <code>fillMasterTable</code>.</li>
@@ -248,10 +259,10 @@
 
         <ul>
             <li>Comme d'habitude, première étape, le nom : de <code>fillMasterTable</code> on peut aller vers <code>fillTable</code>.</li>
-            <li>Modifie son appel dans l'event listener tout en bas.</li>
-            <li>Le paramètre que nous voulons passer est le corps du tableau, dans notre cas le masterTableBody. Ajoute donc <code>tableBody</code> en paramètre.</li>
-            <li>Cherche dans la fonction <code>fillTable</code> où masterTableBody est utilisé, et remplace le par tableBody. Normalement à 2 endroits.</li>
-            <li>Dans l'appel de la fonction, au niveau de l'event listener, rajoute le paramètre, en lui fournissant masterTableBody.</li>
+            <li>Modifions son appel dans l'event listener tout en bas.</li>
+            <li>Le paramètre que nous voulons passer est le corps du tableau, dans notre cas le masterTableBody. Ajoutons donc <code>tableBody</code> en paramètre.</li>
+            <li>Cherchons dans la fonction <code>fillTable</code> où masterTableBody est utilisé, et remplaçons le par tableBody. Normalement à 2 endroits.</li>
+            <li>Dans l'appel de la fonction, au niveau de l'event listener, ajoutons le paramètre, en lui fournissant notre variable <code>masterTableBody</code>.</li>
         </ul>
     </body>
 </html>
