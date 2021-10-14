@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Etape 5 - Variations</title>
+        <link rel="stylesheet" href="../assets/style.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+            integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
+            crossorigin="anonymous"
+        />
+        <script 
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+            crossorigin="anonymous"
+        ></script>
+    </head>
+
+    <body class="container">
+        <h1>Variations de difficulté pour l'étape 5</h1>
+
+        <p>Donc à lire quand tu as fini \o/ ou que tu es bloquée /o\.</p>
+
+        <h2>Pour augmenter la difficulté ?</h2>
+
+        <ul>
+            <li>Déjà si tu as reglé l'histoire de scope de la variable toute seule, on peut considérer que c'était le hardmode :)</li>
+            <li>Vois-tu comment rendre le tout plus propre en déclarant correctement <code>filteredMaster</code> et <code>filteredDog</code> ?</li>
+            <li>Que se passe-t-il quand tu sélectionnes "-- please choose a master --" ? Est-ce un comportement attendu ? Que voudrait-on ultimement ?</li>
+            <li>
+                <details>
+                    <summary>Saurais-tu coder ce comportement ? --></summary>
+                    <p>Ici le plus important c'est le design. Le tableau doit-il disparaitre ? Ou se vider ? Ou rester figé ? Pareil pour les menus déroulants ?</p>
+                    <p>Il n'y a pas de réponse précise à ça, question de gouts et de cible. Tout au plus on peut corriger l'erreur qui apparait dans notre console :)</p>
+                    <p><b>C'était surtout ça qu'il fallait détecter, la bonne réponse ! <code>Uncaught TypeError: Cannot read properties of undefined (reading 'dogs')</code></b></p>
+                    <p>C'est pour la prochaine étape ;)</p>
+                </details>
+            </li>
+        </ul>
+
+        <h2>Besoin d'un coup de pouce ?</h2>
+
+        <p>Voici les grandes étapes que tu dois retrouver dans ta réflexion pour cette étape :</p>
+
+        <ul>
+            <li>L'ajout d'un addEventListener sur le sélecteur de chiens,</li>
+            <li>Dans celui ci, l'appel à la fonction <code>fillTable()</code>,</li>
+            <li>La déclaration d'une variable <code>filteredDog</code> avec un coup de <code>filter()</code></li>
+            <li>Rendre la variable filteredMaster accessible à l'intérieur de cette fonction, car elle ne l'est actuellement pas (étape la plus dure en fait),</li>
+            <li>Passer <code>filteredDog</code> à <code>fillTable()</code>, et voir le tableau se remplir,</li>
+            <li>Décider de réserver le même traitement à <code>filteredDog</code> que pour <code>filteredMaster</code>.</li>
+        </ul>
+
+        <h3>Add Event Listener</h3>
+
+        <ul>
+            <li>Rien de très compliqué ici, ça sera un 'change', il suffit juste de trouver sur quoi l'accrocher.</li>
+            <li>Comme on veut que le remplissage du tableau se déclenche lors de la sélection d'un chien dans le menu, ça sera sur l'élément <code>dogSelector</code>.</li>
+            <li>on peut commencer par un petit <code>dogSelector.addEventListener('change', e => { console.log(e.target.value)})</code> pour voir si c'est correct.</li>
+        </ul>
+        
+        <h3>Appel de fillTable()</h3>
+
+        <ul>
+            <li>Ici encore rien de bien dur directement, mais si tu commences à voir dans quoi tu vas t'enliser, c'est normal, on garde son calme.</li>
+            <li>Ecrire fillTable() est simple, mais que met-on comme arguments ?</li>
+            <li>Pour le second c'est assez simple, on met <code>dogTableBody</code> qui est déclaré en constante tout en haut...</li>
+            <li>...Mais pour la première, il va falloir récupérer les infos du chien.</li>
+            <li>Pour tester ce qu'on fait, on peut écrire un petit : <code>fillTable({"nom": "test"}, dogTableBody)</code> et constater qu'on écrit bien dans le tableau.</li>
+        </ul>
+
+        <h3>Le chien filtré</h3>
+
+        <p>On commence à rentrer dans les structures imbriquées, ça va faire mal à la tête. Mais c'est le jeu !</p>
+        <ul>
+            <li>On va s'inspirer de ce qui se passe dans l'eventListener au-dessus, avec la déclaration <code>let filteredMaster = ...</code></li>
+            <li>Pas de scrupules, copions collons et adaptons.</li>
+            <li>Ce qu'on veut, c'est un objet chien. Celui-ci est dans un array de chiens, dans la propriété "dogs" du maître sélectionné dans le précédent menu déroulant.</li>
+            <li>Une fois le français traduit en code, ça nous donne : <code>let filteredDog = filteredMaster.dogs.filter(dog => dog.name === e.target.value)[0]</code></li>
+            <li>Le problème ici, c'est qu'on ne peut pas tester notre résultat ! filteredMaster est inacessible nous dit la console. On va donc régler ceci pour valider ici.</li>
+        </ul>
+
+        <h3>Variable filteredMaster inaccessible</h3>
+
+        <ul>
+            <li>C'est la partie que nous avions jamais vu. Comment rendre filteredMaster accessible ?</li>
+            <li>
+                On voit 2 choses quand on la regarde : elle est déclarée en let, 
+                et elle est déclarée dans un scope réduit, à savoir dans une fonction (dans la callable de <code>dogSelector.addEventListener()</code>).
+            </li>
+            <li>Comment peut-on la rendre accessible depuis l'extérieur ?</li>
+            <li>
+                Nous sommes devant un paradoxe : la solution la plus simple est également pratiquement la plus sale, mais aussi compliquée à comprendre !
+                C'est un cas d'école de "hmmmm pourquoi ça marche... ?"
+            </li>
+            <li>Le plus simple est donc de virer le <code>let</code> devant <code>filteredMaster</code>. Vois-tu ce qui se passe ?</li>
+            <ol>
+                <li>
+                    ton script code.js est lu. Il n'y a pas de variable <code>filteredMaster</code> existante au premier passage,
+                     vu que <code>masterSelector.addEventListener()</code> n'est pas exécutée (il faudrait un change pour cela).
+                </li>
+                <li>
+                    Tu sélectionnes un maître dans le menu. La callable est exécutée, 
+                    JavaScript passe sur <code>filteredMaster = doggletData.filter(master => master.firstName === e.target.value)[0]</code>
+                </li>
+                <li>il n'y a pas de mot clé const, var ou let devant, JavaScript considère donc que la variable n'est pas déclarée ici, mais dans le scope plus haut...</li>
+                <li>...Sauf qu'elle n'est pas déclarée là haut non plus. On n'a jamais rajouté de <code>var filteredMaster</code> en ligne 5 (tu peux le faire, ça marche pareil).</li>
+                <li>Mais c'est pas grave car JavaScript sait créer des variables à la volée; donc ne trouvant pas <code>filteredMaster</code>, il la déclare lui même... Dans le scope global.</li>
+                <li>Et du coup elle devient accessible dans le scope de <code>dogSelector.addEventListener()</code>.</li>
+            </ol>
+            <li>C'est compliqué car... Bon bah tu vois au dessus.</li>
+            <li>Et c'est sale car <code>filteredMaster</code> est une :
+                <ol>
+                    <li>Variable (ce qu'on a déclaré avant nous c'est des constantes),</li>
+                    <li>Globale (ça on a déjà fait cette erreur),</li>
+                    <li>non déclarée (si on fait une faute de frappe quelque part on saura jamais).</li>
+                </ol>
+            <li>
+                Ca va dans le cadre de notre petit projet, car tout tient dans un petit fichier code.js.
+                Mais tu imagines bien qu'un projet en 50 pages webs, dont la logique de code est découpée à travers 500 fichiers, 5000 fonctions et 50 000 lignes, le tout administré par 80 développeurs...
+                Tu ne peux pas négocier avec des variables globales et déclarée en secret dans une obscure fonction. Et si 2 personnes nomment une variable 'data' ?
+            </li>
+        </ul>
+
+        <h3>En route pour fillTable()</h3>
+
+        <ul>
+            <li>maintenant que notre <code>filteredMaster</code> est accessible, retour sur notre <code>filter()</code>.</li>
+            <li>un petit <code>console.log(filteredDog)</code> pour s'assurer que le filter marche ?</li>
+            <li>On peut appeler <code>fillTable(filteredDog, dogTableBody)</code> correctement.</li>
+            <li>Normalement, le tableau se remplit !</li>
+        </ul>
+
+        <h3>Harmonisation du comportement</h3>
+
+        <ul>
+            <li>Vois tu ce qu'on peut faire ?</li>
+            <li>Je pensais à ne pas avoir un <code>filteredDog</code> déclaré dans son bloc, et un <code>filteredMaster</code> accessible partout.</li>
+            <li>Rendons <code>filteredDog</code> accessible partout en enlevant le <code>let</code>.</li>
+        </ul>
+
+
+    </body>
+</html>
