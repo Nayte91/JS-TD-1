@@ -57,14 +57,13 @@ const fillTable = (data, tableBody) => {
 */
 window.addEventListener('load', populateSelector(doggletData, masterSelector))
 masterSelector.addEventListener('change', (e) => {
-
+    dogTableBody.innerHTML = dogSelector.innerHTML = masterTableBody.innerHTML = ''
+    
     if (e.target.value) {
         filteredMaster = doggletData.filter(master => master.firstName === e.target.value)[0]
 
         fillTable(filteredMaster, masterTableBody)
         populateSelector(filteredMaster.dogs, dogSelector)
-    } else {
-        dogTableBody.innerHTML = dogSelector.innerHTML = masterTableBody.innerHTML = ''
     }
 })
 dogSelector.addEventListener('change', e => {
