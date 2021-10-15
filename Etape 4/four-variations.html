@@ -79,7 +79,7 @@
                             </li>
                             <li>Les 2 fonctions ont un paramètre en commun, <code>selectedMasterFirstName</code>, par lequelle elles filtrent pour trouver les datas du maître sélectionné.</li>
                             <li>Les 2 fonctions sont appelées au même endroit, dans le <code>masterSelector.addEventListener()</code>. On peut donc refiler la data déjà filtrée au lieu de passer le selectedMasterFirstName !</li>
-                            <li>Commencons par déclarer, au début de la callback de notre addEventListener, notre filtre et mettre son contenu dans une variable.</li>
+                            <li>Commencons par déclarer, au début de la callable de notre addEventListener, notre filtre et mettre son contenu dans une variable.</li>
                             <li>
                                 <details>
                                     <summary>On peut commencer par copier/coller le filtre déjà existant, puis le modifier --></summary>
@@ -89,7 +89,7 @@
                             <li>
                                 <details>
                                     <summary>
-                                        La partie <code>selectedMasterFirstName</code> de la ligne précédente ne veut plus rien dire une fois dans la callback de l'event listener. 
+                                        La partie <code>selectedMasterFirstName</code> de la ligne précédente ne veut plus rien dire une fois dans la callable de l'event listener. 
                                         Comment le remplacer ? -->
                                     </summary>
                                     <p>Le <code>selectedMasterFirstName</code> nous l'avons déjà... C'est notre <code>e.target.value</code> qu'auparavant nous passions en paramètre !</p>
@@ -127,7 +127,7 @@
                             <li>
                                 <details>
                                     <summary>Nous avons un nouveau problème puisque <code>populateDogSelector()</code> ne fait pas le même forEach. Vois-tu le problème et sais-tu le résoudre ? --></summary>
-                                    <p>Le forEach de <code>populateDogSelector()</code> se fait sur les dogs du maitre sélectionné, non pas directement sur le maitre en question !</p>
+                                    <p>Le forEach de <code>populateDogSelector()</code> se fait sur les dogs du maître sélectionné, non pas directement sur le maître en question !</p>
                                     <p>Pour la correction, nous allons passer directement le bon array... </p>
                                     <p>Lors de l'appel de la fonction : <code>populateDogSelector(filteredMaster.dogs)</code> soit la propriété 'dogs' du maître filtré !</p>
                                     <p>Et modifions dans la fonction en conséquence : <code>array.forEach(dog => addOptionTag(dogSelector, dog.name))</code></p>
@@ -226,7 +226,7 @@
             <li>
                 <details>
                     <summary>Qu'est ce que tu dois contrôler sur ta page pour t'assurer que tout est OK ? --></summary>
-                    <p>Que les 2 menus déroulants soient bien remplis avec les maitres/animaux !</p>
+                    <p>Que les 2 menus déroulants soient bien remplis avec les maîtres/animaux !</p>
                 </details>
             </li>
             <li>Assure toi que ça marche; Tu peux enfin supprimer les 2 anciennes fonctions.</li>

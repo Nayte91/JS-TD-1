@@ -2,8 +2,8 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <title>Dogglet viewer</title>
-        <!-- <link rel="stylesheet" href="../assets/style.css" /> -->
+        <title>Dogglet explorer</title>
+        <link rel="stylesheet" href="../assets/style.css" />
         <link
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
@@ -16,34 +16,36 @@
             crossorigin="anonymous"
         ></script>
         <script src="../assets/data.js" defer></script>
-        <script src="../assets/tools.js" defer></script>
-        <script src="./final-code.js" defer></script>
+        <script src="final-code.js" defer></script>
     </head>
-    <body class="container">
-        <h1>Dogglet viewer</h1>
 
-        <select name="masters" id="master" class="form-select my-2"></select>
+    <body>
+        <div class="container">
+            <h1>Explorateur Dogglet</h1>
 
-        <table class="table table-striped" id="master-table">
-            <thead class="table-dark">
-                <tr>
-                    <th style="width: 50%">Property</td>
-                    <th style="width: 50%">Value</td>
-                </tr>
-            </thead>
-            <tbody id="master-table-body"></tbody>
-        </table>
+            <select id="master-selector" class="form-select my-2" data-name="master" data-carried="firstName"></select>
 
-        <select name="dogs" id="dog" class="form-select my-2"></select>
+            <table class="table table-striped" id="master-table">
+                <thead class="table-dark">
+                    <tr>
+                        <th style="width: 50%">Property</td>
+                        <th style="width: 50%">Value</td>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
 
-        <table class="table table-striped table-sm" id="dog-table">
-            <thead class="table-dark">
-                <tr>
-                    <th style="width: 50%">Property</td>
-                    <th style="width: 50%">Value</td>
-                </tr>
-            </thead>
-            <tbody id="dog-table-body"></tbody>
-        </table>
+            <select id="dog-selector" class="form-select my-2" data-name="dog" data-carried="name"></select>
+
+            <table class="table table-striped" id="dog-table">
+                <thead class="table-dark">
+                    <tr>
+                        <th style="width: 50%">Property</td>
+                        <th style="width: 50%">Value</td>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
     </body>
 </html>

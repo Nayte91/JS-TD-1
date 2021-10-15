@@ -25,11 +25,74 @@
         <h2>Pour augmenter la difficulté ?</h2>
 
         <ul>
-            <li></li>
+            <li>
+                <details>
+                    <summary>Si tu reprends les points où je détaille les spécifications, vois tu ce qui est optimisable ? --></summary>
+                    <p>Je te donne la réponse ici car elle peut être l'occasion de repasser un coup sur ton code avec enthousiasme.</p>
+                    <p>
+                        Quand on choisi "please choose a master", on s'en fiche de savoir si un était sélectionné avant ou pas. 
+                        On peut, dans tous les cas, effacer le contenu du sélecteur et du tableau des chiens, ainsi que du tableau du maître.
+                    </p>
+                    <p>
+                        On peut même aller un cran plus loin : Dans tous les cas on efface les 2 tableaux et le sélecteur de chien, 
+                        et si un maître est choisi, on les rempli.
+                    </p>
+                    <p>L'avantage c'est que tu économises le else !</p>
+                </details>
+            </li>
+            <li>
+                Tu peux également appliquer ta nouvelle logique de code, dans <code>masterSelector.addEventListener()</code>, 
+                à ton autre méthode <code>dogSelector.addEventListener()</code>.</li>
+            <li>
+                Saurais tu transformer notre if qui est dans notre fonction <code>addOptionTag()</code> en un "conditional ternary operator" ? 
+                <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_Operator">La page pour t'aider.</a>
+            </li>
         </ul>
 
         <h2>Besoin d'un coup de pouce ?</h2>
 
-        <p>Voici les grandes étapes que tu dois retrouver dans ta réflexion pour cette étape :</p>
+        <p>Voici par où tu dois passer pour réaliser cette étape :</p>
+
+        <ol>
+            <li>Mettre une condition dans la fonction <code>addOptionTag()</code>, pour mettre soit <code>text</code> soit <code>''</code> dans <code>element.value</code></li>
+            <li>Dans notre <code>addEventListener</code>, on va évaluer si e.target.value nous renvoie quelque chose.</li>
+            <li>Si y a une valeur dans e.target.value, on fait comme d'habitude.</li>
+            <li>Si il n'y en a pas, on efface tout sauf le sélecteur des maîtres.</li>
+        </ol>
+
+        <h3>AddOptionTag</h3>
+
+        <ul>
+            <li>Ici, nous allons devoir écrire un if.</li>
+            <li>
+                <details>
+                    <summary>Comment tester isDefault avec un if ? --></summary>
+                    <p>Un booléen se teste simplement en JavaScript : <code>if (isDefault) { ...</code> suffit a vérifier, 
+                        la partie "then" (les premières accolades) sera pour le true, la partie "else" (si tu en mets une) sera pour le false.
+                    </p>
+                    <p>Ne pas oublier qu'un if attends toujours un true ou false de la part de ce qu'il test, donc un booléen c'est la plus simple expression !</p>
+                </details>
+            </li>
+            <li>Ce sera bien l'attribut <code>element.value</code> que l'on va remplir différement en cas de true ou false.</li>
+            <li>Si c'est true, et que donc c'est la valeur par défaut de notre sélecteur, nous mettons <code>''</code></li>
+            <li>... Et donc dans le else, nous mettons ce que nous avions avant, <code>element.value = text</code></li>
+        </ul>
+
+        <h3>addEventListener</h3>
+
+        <ul>
+            <li>On sait que tout ce qu'on fait d'habitude au sein de cette callable doit être fait seulement si e.target.value a une valeur en elle.</li>
+            <li>On sait donc qu'on va vers un if (pas l'arbre...). Comment on teste e.target.value facilement ?</li>
+            <li>En JavaScript, si une string est vide, donc avec '', elle revoit false. Si elle n'est pas vide, elle renvoit true...</li>
+            <li>On est donc, comme pour <code>addOptionTag()</code>, dans un nouveau cas simple (mais c'était moins simple à deviner) ou <code>if (e.target.value) { ...</code> fait le boulot.</li>
+            <li>On aura également un <code>else</code>, où il faudra effacer.</li>
+            <li>Ici on peut reprendre nos précédents bouts de code qui nous permettent d'effacer les contenus, 
+                à savoir 
+                <code>dogTableBody.innerHTML = ''</code>, 
+                <code>dogSelector.innerHTML = ''</code>, et 
+                <code>masterTableBody.innerHTML = ''</code>
+            </li>
+            <li>On met ça dans le <code>else { ...</code>, on teste avec la console ouverte, tout marche bien, on va se coucher ! Ou on jette un oeil aux variations dures :)</li>
+        </ul>
     </body>
 </html>

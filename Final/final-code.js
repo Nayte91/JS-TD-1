@@ -1,46 +1,46 @@
+const masterSelector = document.getElementById('master-selector')
+const dogSelector = document.getElementById('dog-selector')
+const masterTableBody = document.getElementById('master-table').getElementsByTagName('tbody')[0]
+const dogTableBody = document.getElementById('dog-table').getElementsByTagName('tbody')[0]
+
+const get
 /* fonction qui crée un élément HTML option, en fonction du texte envoyé.
 peu ou prou : "<option value="text">text</option>"
 On pourra ensuite l'insérer dans le sélecteur pour faire un joli menu déroulant. */
-const createOptionTag = (text) => {
+const addOptionTag = (selector, text, isDefault = false) => {
     let element = document.createElement("option")
-    element.text = element.value = text
 
-    return element
+    element.text = text
+    element.value = isDefault ? '' : text
+
+    selector.add(element, null)
 }
 
-const populateSelector = (selector, dataArray, index, text) => {
-    selector.innerHTML = "";
+const populateSelector = (data, selector) => {
+    let name = selector.getAttribute('data-name')
+    let property = selector.getAttribute('data-carried')
 
-    let defaultOption = document.createElement("option");
-    defaultOption.text = "-- Please choose a " + text + " --";
-    selector.add(defaultOption, null)
-    
+    selector.innerHTML = ''
+
+    addOptionTag(selector, '-- Please choose a ' + name + ' --', true)
+
     /* row est un object, mais les propriétés d'un object peuvent être appelées
     avec . ou avec [] ! Ici, [index] permet d'appeler dynamiquement,
     en fonction d'un index qui change. 
     https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Property_Accessors#bracket_notation */
-    dataArray.forEach((row) => selector.add(createOptionTag(row[index]), null))
+    data.forEach(row => addOptionTag(selector, row[property]))
 }
 
-const populateMasterSelector = (selector, dataArray) => {
-    populateSelector(selector, dataArray, 'firstName', 'master')
-}
+const addTableRow = (tableBody, property, value) => tableBody.innerHTML += "<tr><td>" + property + "</td><td>" + value + "</td></tr>"
 
-const populateDogSelector = (selector, dataArray) => {
-    populateSelector(selector, dataArray, 'name', 'dog')
-}
+const fillTable = (data, tableBody) => {
+    tableBody.innerHTML = ''
 
-const populateTableBody = (tableBody, dataObject) => {
-    tableBody.innerHTML = ""
-
-    for (const prop in dataObject) {
+    for (const property in data) {
         /* le if teste si la propriété que l'on va lire n'est pas un tableau ou un objet.
         En JavaScript, tableau ou objet renvoient 'object' quand on demande son type avec typeof ! 
         https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Operators/typeof#description */ 
-        if (typeof dataObject[prop] !== 'object') { 
-            let newLine = "<tr><td>" + prop + "</td><td>" + dataObject[prop] + "</td></tr>"
-            tableBody.innerHTML += newLine;
-        }
+        ('object' !== typeof data[property]) && addTableRow(tableBody, property, data[property])
     }
 }
 
@@ -56,20 +56,19 @@ const populateTableBody = (tableBody, dataObject) => {
             elle ne renvoit rien.
     https://developer.mozilla.org/en-US/docs/Web/API/Window/load_event 
 */
-window.addEventListener(
-    'load', 
-    () => {
-        populateMasterSelector(masterSelector, doggletData)
-        populateDogSelector(dogSelector, doggletData[0].dogs)
-        populateTableBody(dogTable, doggletData[0].dogs[0])
-    }
-)
+window.addEventListener('load', populateSelector(doggletData, masterSelector))
+masterSelector.addEventListener('change', (e) => {
 
-masterSelector.addEventListener(
-    'change', 
-    (e) => {
-        var selectedMasterData = doggletData.filter(master => master.firstName == e.target.value)[0]
-        populateTableBody(masterTable, selectedMasterData)
-        populateDogSelector(dogSelector, selectedMasterData.dogs)
+    if (e.target.value) {
+        filteredMaster = doggletData.filter(master => master.firstName === e.target.value)[0]
+
+        fillTable(filteredMaster, masterTableBody)
+        populateSelector(filteredMaster.dogs, dogSelector)
+    } else {
+        dogTableBody.innerHTML = dogSelector.innerHTML = masterTableBody.innerHTML = ''
     }
-)
+})
+dogSelector.addEventListener('change', e => {
+    filteredDog = filteredMaster.dogs.filter(dog => dog.name === e.target.value)[0]
+    fillTable(filteredDog, dogTableBody)
+})

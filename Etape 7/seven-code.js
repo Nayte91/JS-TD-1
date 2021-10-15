@@ -3,9 +3,12 @@ const dogSelector = document.getElementById('dog-selector')
 const masterTableBody = document.getElementById('master-table').getElementsByTagName('tbody')[0]
 const dogTableBody = document.getElementById('dog-table').getElementsByTagName('tbody')[0]
 
-const addOptionTag = (selector, text) => {
+// const addOptionTag = (selector, text) => {
+const addOptionTag = (selector, text, isDefault = false) => {
     let element = document.createElement("option")
-    element.text = element.value = text
+    
+    element.text = text
+    element.value = text
 
     selector.add(element, null)
 }
@@ -16,7 +19,8 @@ const populateSelector = (data, selector) => {
 
     selector.innerHTML = ''
 
-    addOptionTag(selector, '-- Please choose a ' + name + ' --')
+    // addOptionTag(selector, '-- Please choose a ' + name + ' --')
+    addOptionTag(selector, '-- Please choose a ' + name + ' --', true)
 
     data.forEach(row => addOptionTag(selector, row[property]))
 }
@@ -26,9 +30,7 @@ const addTableRow = (tableBody, property, value) => tableBody.innerHTML += "<tr>
 const fillTable = (data, tableBody) => {
     tableBody.innerHTML = ''
 
-    for (const property in data) {
-        ('object' !== typeof data[property]) && addTableRow(tableBody, property, data[property])
-    }
+    for (const property in data) ('object' !== typeof data[property]) && addTableRow(tableBody, property, data[property])
 }
 
 window.addEventListener('load', populateSelector(doggletData, masterSelector))
