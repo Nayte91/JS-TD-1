@@ -20,6 +20,8 @@
     <body class="container">
         <h1>Présentation de l'exercice 7</h1>
 
+        <p>On commence à arriver au bout de ce que je voulais te faire travailler. Ici, on va peaufiner en réglant quelques bugs.</p>
+
         <p>Tes fidèles fichiers :</p>
 
         <ol>
@@ -27,5 +29,106 @@
             <li>Ouvre <code>seven-code.js</code> dans ton EDI,</li>
             <li>Le fichier <a href="seven-variations.html">seven-variations.html</a> te propose des difficultés différentes, si tu galères ou que tu te balades.</li>
         </ol>
+
+        <p>
+            On a un bug dans l'application quand nous choisissons un maître, puis que nous re-choisissons "please choose a master". 
+            Le menu déroulant des chiens reste affiché, mais plante si on sélectionne...
+            Et on a un message <code><b>Uncaught TypeError: Cannot read properties of undefined (reading 'dogs')</b></code> dans la console.
+        </p>
+
+        <p>Nous allons donc régler cette erreur, et régler le comportement général de la page.</p>
+
+        <p>Ce que nous voulons, c'est :</p>
+
+        <ul>
+            <li>
+                Lorsqu'aucun maître n'est sélectionné (donc qu'on a choisi "please chose a master"), 
+                le menu déroulant et le tableau des chiens soient vides (ce qui corrige l'erreur console).
+            </li>
+            <li>Lorsqu'un chien est sélectionné et qu'on change de maître, le menu déroulant des chiens ET le tableau reset.</li>
+        </ul>
+
+        <p>Et maintenant si nous détaillons ces lignes :</p>
+
+        <ul>
+            <li>Lors du chargement de la page, on rempli le menu des maîtres : rien ne change.</li>
+            <li>Lorsqu'un maître est sélectionné, on vérifie le choix.</li>
+            <li>Si c'est "please chose a master" qui est choisi, on ne lance pas les fonctions pour remplir le tableau et le menu des chiens.</li>
+            <li>Si c'est un autre maître, on lance bien ces 2 fonctions.</li>
+            <li>
+                Si un maître a déjà été choisi et qu'on re-sélectionne "please choose a master", 
+                alors on doit effacer ce qui était affiché pour le chien,
+                à savoir le menu déroulant des chiens du maître, et le tableau du chien.
+            </li>
+        </ul>
+
+        <p>Pour réaliser ceci sans (trop) s'arracher les cheveux, nous allons apprendre 2 nouvelles notions :</p>
+
+        <ul>
+            <li>Un paramètre optionnel dans une fonction, un classique en programmation et utile en JavaScript</li>
+            <li>Le retour de l'astuce des attributs HTML, cela t'intéresse moins alors je vais te le macher.</li>
+        </ul>
+
+        <p>
+            Du coté du HTML tout d'abord : il est possible dans un menu déroulant, de porter une valeur, tout comme on a fait avec <code>data-carried</code> précédemment.
+            Dans un menu déroulant c'est même <a href="https://developer.mozilla.org/fr/docs/Web/HTML/Element/Select">un classique</a> 
+            puisque c'est spécifié par défaut, avec un attribut "value".
+        </p>
+
+        <p>
+            Et nous pouvons lire (et écrire) en JavaScript cette information "value" facilement. Dans notre vieille fonction <code>addOptionTag()</code>, 
+            depuis le début nous remplissons la value (<code>element.value = text</code>) avec le texte écrit dans l'option, à savoir le prénom pour les maîtres, le nom pour les chiens, ...
+        </p>
+
+        <p>
+            Nous allons donc, dans le cas où nous envoyons "-- Please choose a bidule --" dans le menu, 
+            mettre <code>value</code> vide, comme sur <a href="https://developer.mozilla.org/fr/docs/Web/HTML/Element/Select">l'exemple de Mozilla</a>.
+        </p>
+
+        <p>
+            pour faire cela, on pourrait très bien rajouter, dans cette fonction <code>addOptionTag()</code>, 
+            un <code>if ((text === '-- Please choose a master --') OR (text === '-- Please choose a dog --'))</code>, ou bien encore un 
+            <code>if (text.startsWith("-- "))</code> et cela marcherait. Dans ce if, nous mettrions <code>element.value = ''</code>. Mais tu comprends très vite que c'est pas propre, 
+            si un petit malin met "-- " au début de son nom, ou encore qu'on a plus de sélecteurs que "master" et "dogs", la fonction ne gère plus.
+        </p>
+
+        <p>
+            Donc pour faire ça propre, nous allons ajouter un 3ème argument à notre fonction : <code>isDefault</code> qui sera true ou false (un booléen donc).
+            Tu remarques que la bonne pratique est de nommer les arguments booléens avec un verbe d'état : "isMachin", "hasBidule", ...
+        </p>
+
+        <p>
+            Sauf que rajouter un paramètre à une fonction, ça veut dire changer l'API de cette fonction, autrement dit son contrat : 
+            toutes les fonctions qui l'utilisaient doivent rajouter ce paramètre ! soit true soit false. Dans notre projet ça va, on a que 2 appels vers <code>addOptionTag()</code>. 
+            Mais si nous venions à dépasser la 100aine...
+        </p>
+
+        <p>
+            Donc pour à la fois éviter de rompre le contrat avec les appels de fonctions, et pour limiter le nombre de paramètres obligatoires (ça devient vite illisible quand tu as plus de 4),
+            il est possible de rendre un argument optionnel : pour faire ça, on spécifie, dans la signature de notre fonction, la valeur que l'on souhaite de base.
+            Ainsi, quand quelqu'un ne spécifie pas ce paramètre, la valeur de base est choisie.
+        </p>
+
+        <p>Ce que tu vas devoir faire pour démarrer va donc être de modifier la signature de notre fonction, comme cela :
+            <code>const addOptionTag = (selector, text, isDefault = false) => { ...</code>
+        </p>
+
+        <p>En rajoutant <code>isDefault = false</code>, on va permettre lorsqu'on l'appelle, de spécifier si ce qu'on y met est la valeur par défaut ou non.</p>
+
+        <p>
+            ... Donc nous allons l'utiliser à un endroit : 
+            <code>addOptionTag(selector, '-- Please choose a ' + name + ' --', true)</code> 
+            ceci dans notre fonction <code>populateSelector</code>
+        </p>
+
+        <p>Je t'ai rajouté tout cela dans le fichier <code>seven-code.js</code> si jamais tu hésites à repartir du tiens.</p>
+
+        <p>
+            Note également, que <code>e.target.value</code> que nous appelons dans les event listeners de nos sélecteurs, lisent cet attribut "value" ! 
+            <b>Attends toi donc à ce qu'ils renvoient <code>false</code> ou <code>''</code> (ce qui revient au même en JS) lorsque l'utilisateur sélectionnera
+            "-- Please choose a bidule --"</b>.
+        </p>
+
+        <p>Voila pour ce qui est de mon aide. Quand à ce qu'il y aura à modifier dans <code>addOptionTag()</code> et dans <code>masterSelector.addEventListener()</code>, c'est à toi de jouer !</p>
     </body>
 </html>

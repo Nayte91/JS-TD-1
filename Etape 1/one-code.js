@@ -7,7 +7,9 @@
 const addOptionTagToMaster = (text) => {
     let masterSelector = document.getElementById('master-selector')
     let element = document.createElement("option")
-    element.text = element.value = text
+    
+    element.text = text
+    element.value = text
 
     masterSelector.add(element, null)
 }

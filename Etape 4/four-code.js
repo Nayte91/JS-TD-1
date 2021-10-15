@@ -7,7 +7,9 @@ const dogSelector = document.getElementById('dog-selector')
 
 const addOptionTagToMaster = (text) => {
     let element = document.createElement("option")
-    element.text = element.value = text
+    
+    element.text = text
+    element.value = text
 
     masterSelector.add(element, null)
 }
@@ -55,7 +57,7 @@ const resetMasterTable = () => masterTableBody.innerHTML = ""
 const resetDogSelector = () => dogSelector.innerHTML = ""
 
 /*
-    Rempli le tableau des maitres avec les propriétés de l'objet maitre sélectionné.
+    Rempli le tableau des maîtres avec les propriétés de l'objet maître sélectionné.
     Cette fonction reçoit un paramètre, une string qui contient le prénom du maître sélectionné.
     Elle ne renvoie rien.
 */

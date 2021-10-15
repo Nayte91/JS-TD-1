@@ -6,7 +6,9 @@ const masterTableBody = document.getElementById('master-table').getElementsByTag
 
 const addOptionTagToMaster = (text) => {
     let element = document.createElement("option")
-    element.text = element.value = text
+    
+    element.text = text
+    element.value = text
 
     masterSelector.add(element, null)
 }

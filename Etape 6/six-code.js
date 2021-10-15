@@ -5,7 +5,9 @@ const dogTableBody = document.getElementById('dog-table').getElementsByTagName('
 
 const addOptionTag = (selector, text) => {
     let element = document.createElement("option")
-    element.text = element.value = text
+    
+    element.text = text
+    element.value = text
 
     selector.add(element, null)
 }

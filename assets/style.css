@@ -4,3 +4,15 @@ body {
     width: 100%;
     font-family: 'Open Sans';
 }
+
+h1 {
+    color: rgb(77, 2, 2);
+}
+
+h2 {
+    color: rgb(3, 2, 82);
+}
+
+h3 {
+    color: rgb(2, 92, 17);
+}
